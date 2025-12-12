@@ -63,9 +63,8 @@ const Hero = () => {
               variants={itemVariants}
               className="font-headline text-5xl font-extrabold tracking-tight md:text-7xl"
             >
-              Connect with Nigerian
               <span className="block bg-gradient-to-r from-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
-                Experts Abroad
+                Connect with Nigerian Experts Abroad
               </span>
             </motion.h1>
 
