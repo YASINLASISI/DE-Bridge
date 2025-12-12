@@ -41,8 +41,15 @@ const Hero = () => {
   return (
     <section className="relative overflow-hidden bg-background pt-32 pb-20 md:pt-48 md:pb-32">
        <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-background to-transparent"></div>
+        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzY1NTI4Mjc5fDA&ixlib=rb-4.1.0&q=80&w=1080')",
+          }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-40 animate-blob"></div>
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
         <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
