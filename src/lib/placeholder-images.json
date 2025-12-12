@@ -1,3 +1,58 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-consultation",
+      "description": "A professional online consultation between two people.",
+      "imageUrl": "https://images.unsplash.com/photo-1714976694543-e32de3f43d73?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBjb25zdWx0YXRpb258ZW58MHx8fHwxNzY1NDg0MDIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional consultation"
+    },
+    {
+      "id": "problem-brain-drain",
+      "description": "An abstract image representing brain drain.",
+      "imageUrl": "https://images.unsplash.com/photo-1710276965349-5f61f9c96aeb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYXAlMjBwdXp6bGV8ZW58MHx8fHwxNzY1NTIwMTc0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "map puzzle"
+    },
+    {
+      "id": "expert-1",
+      "description": "Profile picture of Dr. Adeola.",
+      "imageUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b21hbiUyMGRvY3RvcnxlbnwwfHx8fDE3NjU0Njk4MTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman doctor"
+    },
+    {
+      "id": "expert-2",
+      "description": "Profile picture of Prof. Chibuzor.",
+      "imageUrl": "https://images.unsplash.com/photo-1618077360395-f3068be8e001?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYW4lMjBnbGFzc2VzfGVufDB8fHx8MTc2NTUxNDUxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man glasses"
+    },
+    {
+      "id": "expert-3",
+      "description": "Profile picture of Barr. Funke.",
+      "imageUrl": "https://images.unsplash.com/photo-1580894732444-8ecded7900cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3b21hbiUyMHByb2Zlc3Npb25hbHxlbnwwfHx8fDE3NjU0NTUyMjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman professional"
+    },
+    {
+      "id": "expert-4",
+      "description": "Profile picture of Mr. David.",
+      "imageUrl": "https://images.unsplash.com/flagged/photo-1553642618-de0381320ff3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtYW4lMjBzdWl0fGVufDB8fHx8MTc2NTQ3NDMxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man suit"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "Picture of testimonial user Tunde.",
+      "imageUrl": "https://images.unsplash.com/photo-1629185752040-57f6fa9b4f53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzbWlsaW5nJTIwbWFufGVufDB8fHx8MTc2NTUxOTkwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling man"
+    },
+    {
+      "id": "testimonial-2",
+      "description": "Picture of testimonial user Chiamaka.",
+      "imageUrl": "https://images.unsplash.com/photo-1598625873873-52f9aefd7d9d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzbWlsaW5nJTIwd29tYW58ZW58MHx8fHwxNzY1NDg0MjAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smiling woman"
+    },
+    {
+      "id": "testimonial-3",
+      "description": "Picture of testimonial user Emeka.",
+      "imageUrl": "https://images.unsplash.com/photo-1590861840597-8ca56f8096a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYW4lMjBjYXN1YWx8ZW58MHx8fHwxNzY1NDM4MDM1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man casual"
+    }
+  ]
 }
