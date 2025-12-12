@@ -41,9 +41,8 @@ const RoleSelection = ({ onSelectRole }: { onSelectRole: (role: 'seeker' | 'expe
 
 const SeekerDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
   <div>
-    <h2 className="text-2xl font-semibold mb-4">Welcome, Seeker {userProfile.name}!</h2>
-    <p>Here you can find experts, manage your bookings, and view your messages.</p>
-    {/* Placeholder for seeker-specific components */}
+    <h1 className="text-3xl font-bold mb-4">Welcome, {userProfile.name}!</h1>
+    <p className="text-muted-foreground mb-6">Here you can find experts, manage your bookings, and view your messages.</p>
      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       <Card>
         <CardHeader>
@@ -76,9 +75,8 @@ const SeekerDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
 
 const ExpertDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
   <div>
-    <h2 className="text-2xl font-semibold mb-4">Welcome, Expert {userProfile.name}!</h2>
-    <p>Manage your profile, view booking requests, and track your sessions.</p>
-    {/* Placeholder for expert-specific components */}
+    <h1 className="text-3xl font-bold mb-4">Welcome, Expert {userProfile.name}!</h1>
+    <p className="text-muted-foreground mb-6">Manage your profile, view booking requests, and track your sessions.</p>
      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
       <Card>
         <CardHeader>
