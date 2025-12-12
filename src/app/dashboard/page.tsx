@@ -33,15 +33,17 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-8">
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="flex h-20 items-center justify-between px-8 border-b">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <Button onClick={handleSignOut} variant="outline">
           Sign Out
         </Button>
-      </div>
-      <p>Welcome, {user.email}!</p>
-      {/* Add more dashboard content here */}
+      </header>
+      <main className="container mx-auto py-10">
+        <p>Welcome, {user.email}!</p>
+        {/* Add more dashboard content here */}
+      </main>
     </div>
   );
 }
