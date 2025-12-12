@@ -80,12 +80,11 @@ const ProblemStatement = () => {
           </motion.div>
           <motion.div variants={itemVariants} className="flex justify-center">
             {image && (
-              <Card className="overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300">
+              <Card className="overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 relative aspect-video w-full max-w-lg">
                 <Image
                   src={image.imageUrl}
                   alt={image.description}
-                  width={1000}
-                  height={800}
+                  fill
                   className="object-cover transition-transform duration-500 hover:scale-105"
                   data-ai-hint={image.imageHint}
                 />

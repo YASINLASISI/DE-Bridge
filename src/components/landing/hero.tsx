@@ -111,9 +111,8 @@ const Hero = () => {
                 <Image
                     src={heroImage.imageUrl}
                     alt={heroImage.description}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-2xl"
+                    fill
+                    className="object-cover rounded-2xl"
                     data-ai-hint={heroImage.imageHint}
                     priority
                 />
