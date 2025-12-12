@@ -40,7 +40,7 @@ export default function RootLayout({
               className="object-cover"
               data-ai-hint="mountain road landscape"
             />
-            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm"></div>
+            <div className="absolute inset-0 bg-background/50 backdrop-blur-sm"></div>
           </div>
           <div className="flex min-h-screen flex-col">
             <Header />
