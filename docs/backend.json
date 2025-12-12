@@ -1,0 +1,579 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the DE-Bridge platform, whether a seeker or an expert.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user entity."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user: 'seeker' or 'expert'."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "name": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "phone": {
+          "type": "string",
+          "description": "The user's phone number."
+        },
+        "profilePhoto": {
+          "type": "string",
+          "description": "URL of the user's profile photo stored in Firebase Storage."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the user account was created.",
+          "format": "date-time"
+        },
+        "lastLogin": {
+          "type": "string",
+          "description": "Timestamp of the user's last login.",
+          "format": "date-time"
+        },
+        "timezone": {
+          "type": "string",
+          "description": "The user's timezone."
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "email",
+        "name"
+      ]
+    },
+    "Expert": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Expert",
+      "type": "object",
+      "description": "Represents an expert on the DE-Bridge platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the expert entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:1 Expert)"
+        },
+        "specialty": {
+          "type": "string",
+          "description": "The expert's area of specialization."
+        },
+        "field": {
+          "type": "string",
+          "description": "The expert's field of expertise."
+        },
+        "credentials": {
+          "type": "array",
+          "description": "URLs of the expert's credentials documents stored in Firebase Storage.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verificationStatus": {
+          "type": "string",
+          "description": "The verification status of the expert's credentials: 'pending', 'approved', or 'rejected'."
+        },
+        "hourlyRate": {
+          "type": "number",
+          "description": "The expert's hourly rate."
+        },
+        "currency": {
+          "type": "string",
+          "description": "The currency in which the expert's hourly rate is specified."
+        },
+        "availableSlots": {
+          "type": "array",
+          "description": "Array of available time slots for the expert.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bio": {
+          "type": "string",
+          "description": "The expert's biography."
+        },
+        "languages": {
+          "type": "array",
+          "description": "Array of languages spoken by the expert.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rating": {
+          "type": "number",
+          "description": "The expert's average rating."
+        },
+        "totalSessions": {
+          "type": "number",
+          "description": "The total number of sessions the expert has conducted."
+        },
+        "earnings": {
+          "type": "number",
+          "description": "The expert's total earnings."
+        },
+        "pendingPayouts": {
+          "type": "number",
+          "description": "The expert's pending payouts."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "specialty",
+        "field",
+        "hourlyRate",
+        "currency"
+      ]
+    },
+    "Seeker": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Seeker",
+      "type": "object",
+      "description": "Represents a seeker on the DE-Bridge platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the seeker entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:1 Seeker)"
+        },
+        "medicalHistory": {
+          "type": "string",
+          "description": "The seeker's medical history (if applicable)."
+        },
+        "preferences": {
+          "type": "string",
+          "description": "The seeker's preferences (specialties interested in)."
+        }
+      },
+      "required": [
+        "id",
+        "userId"
+      ]
+    },
+    "Booking": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Booking",
+      "type": "object",
+      "description": "Represents a booking made on the DE-Bridge platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the booking entity."
+        },
+        "seekerId": {
+          "type": "string",
+          "description": "Reference to Seeker. (Relationship: Seeker 1:N Booking)"
+        },
+        "expertId": {
+          "type": "string",
+          "description": "Reference to Expert. (Relationship: Expert 1:N Booking)"
+        },
+        "sessionType": {
+          "type": "string",
+          "description": "The type of session booked."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the session."
+        },
+        "scheduledTime": {
+          "type": "string",
+          "description": "The scheduled time of the session.",
+          "format": "date-time"
+        },
+        "duration": {
+          "type": "number",
+          "description": "The duration of the session in minutes."
+        },
+        "status": {
+          "type": "string",
+          "description": "The status of the booking: 'pending', 'confirmed', 'completed', or 'cancelled'."
+        },
+        "paymentId": {
+          "type": "string",
+          "description": "Identifier from the payment gateway (e.g., Paystack)."
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount paid for the session."
+        },
+        "platformFee": {
+          "type": "number",
+          "description": "The platform's commission fee."
+        },
+        "escrowStatus": {
+          "type": "string",
+          "description": "The status of the escrow: 'held', 'released', or 'refunded'."
+        },
+        "videoRoomId": {
+          "type": "string",
+          "description": "The ID of the video room for the session."
+        },
+        "documentsUploaded": {
+          "type": "array",
+          "description": "URLs of documents uploaded for the session stored in Firebase Storage.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the booking was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp of when the booking was last updated.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "seekerId",
+        "expertId",
+        "sessionType",
+        "category",
+        "scheduledTime",
+        "duration",
+        "status",
+        "amount",
+        "platformFee",
+        "escrowStatus"
+      ]
+    },
+    "Message": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Message",
+      "type": "object",
+      "description": "Represents a message exchanged between a seeker and an expert.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the message entity."
+        },
+        "conversationId": {
+          "type": "string",
+          "description": "Unique identifier for the conversation. (Relationship: Conversation 1:N Message)"
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Message)"
+        },
+        "receiverId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Message)"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text content of the message."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the message was sent.",
+          "format": "date-time"
+        },
+        "read": {
+          "type": "boolean",
+          "description": "Indicates whether the message has been read."
+        }
+      },
+      "required": [
+        "id",
+        "conversationId",
+        "senderId",
+        "receiverId",
+        "text",
+        "timestamp"
+      ]
+    },
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Represents a review given by a seeker or an expert after a session.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the review entity."
+        },
+        "bookingId": {
+          "type": "string",
+          "description": "Reference to Booking. (Relationship: Booking 1:1 Review)"
+        },
+        "reviewerId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Review)"
+        },
+        "reviewedUserId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Review)"
+        },
+        "rating": {
+          "type": "number",
+          "description": "The rating given in the review (1-5)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "The comment provided in the review."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the review was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "bookingId",
+        "reviewerId",
+        "reviewedUserId",
+        "rating"
+      ]
+    },
+    "MedicalTranslation": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MedicalTranslation",
+      "type": "object",
+      "description": "Represents a medical translation generated by the Bio-LLM Medical Translator.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the medical translation entity."
+        },
+        "bookingId": {
+          "type": "string",
+          "description": "Reference to Booking. (Relationship: Booking 1:1 MedicalTranslation)"
+        },
+        "originalDocument": {
+          "type": "string",
+          "description": "URL of the original medical document stored in Firebase Storage."
+        },
+        "extractedData": {
+          "type": "string",
+          "description": "JSON object containing the extracted medical data."
+        },
+        "translatedSummary": {
+          "type": "string",
+          "description": "The translated summary of the medical document."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the translation was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "bookingId",
+        "originalDocument",
+        "extractedData",
+        "translatedSummary"
+      ]
+    },
+    "Conversation": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Conversation",
+      "type": "object",
+      "description": "Represents a conversation between two users.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the conversation entity."
+        },
+        "participant1Id": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Conversation)"
+        },
+        "participant2Id": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Conversation)"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp of when the conversation was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "participant1Id",
+        "participant2Id"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores core user data (role, email, name, profile photo).",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/expert",
+        "definition": {
+          "entityName": "Expert",
+          "schema": {
+            "$ref": "#/backend/entities/Expert"
+          },
+          "description": "Stores expert-specific data linked to the user. Requires user to be of 'expert' role.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, acting as a foreign key to Expert."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/seeker",
+        "definition": {
+          "entityName": "Seeker",
+          "schema": {
+            "$ref": "#/backend/entities/Seeker"
+          },
+          "description": "Stores seeker-specific data linked to the user. Requires user to be of 'seeker' role.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, acting as a foreign key to Seeker."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/bookings/{bookingId}",
+        "definition": {
+          "entityName": "Booking",
+          "schema": {
+            "$ref": "#/backend/entities/Booking"
+          },
+          "description": "Stores booking information, including references to seeker and expert. Includes denormalized 'seekerId' and 'expertId' for authorization independence.",
+          "params": [
+            {
+              "name": "bookingId",
+              "description": "The unique identifier for the booking."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/conversations/{conversationId}",
+        "definition": {
+          "entityName": "Conversation",
+          "schema": {
+            "$ref": "#/backend/entities/Conversation"
+          },
+          "description": "Stores conversation metadata between two users.",
+          "params": [
+            {
+              "name": "conversationId",
+              "description": "The unique identifier for the conversation."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/conversations/{conversationId}/messages/{messageId}",
+        "definition": {
+          "entityName": "Message",
+          "schema": {
+            "$ref": "#/backend/entities/Message"
+          },
+          "description": "Stores messages within a conversation. Includes senderId and receiverId for authorization independence.",
+          "params": [
+            {
+              "name": "conversationId",
+              "description": "The unique identifier for the conversation."
+            },
+            {
+              "name": "messageId",
+              "description": "The unique identifier for the message."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/reviews/{reviewId}",
+        "definition": {
+          "entityName": "Review",
+          "schema": {
+            "$ref": "#/backend/entities/Review"
+          },
+          "description": "Stores reviews given by users after a session.",
+          "params": [
+            {
+              "name": "reviewId",
+              "description": "The unique identifier for the review."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/medicalTranslations/{translationId}",
+        "definition": {
+          "entityName": "MedicalTranslation",
+          "schema": {
+            "$ref": "#/backend/entities/MedicalTranslation"
+          },
+          "description": "Stores medical translations generated by the Bio-LLM Medical Translator.",
+          "params": [
+            {
+              "name": "translationId",
+              "description": "The unique identifier for the medical translation."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "admin_role",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Documents in this collection indicate admin privileges for a user. Existence of the document grants admin access.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore structure is designed to support the DE-Bridge platform, emphasizing secure and scalable data management. It incorporates key principles like Authorization Independence through denormalization, Structural Segregation for consistent security, and standardized Access Modeling.  The structure includes collections for `users`, `experts`, `seekers`, `bookings`, `messages`, `reviews`, `medicalTranslations`, and `conversations`.  User-owned data (experts and seekers) are stored in subcollections of the `users` collection to leverage path-based security rules.\n\n**Authorization Independence:** To ensure authorization independence, the `bookings` collection includes the `seekerId` and `expertId` fields, which allows security rules to validate a user's access to a booking without needing to perform additional `get()` operations. The `messages` subcollection under `conversations` also achieves this, since `senderId` and `receiverId` in the message documents are used to validate access, independent of parent documents.\n\n**Structural Segregation:** Segregation is evident in the separation of `experts` and `seekers` data from the main `users` collection. While basic user info resides in `users`, specific details are kept separate to align with different security requirements. Admin roles are handled via existence checks in dedicated collections (e.g., `roles_admin/{uid}`).\n\n**Access Modeling:** The structure follows a hierarchical path-based ownership model for user-owned data. For example, bookings are linked to both seekers and experts via `seekerId` and `expertId` fields, which is used for security rule evaluations. The `conversations` collection stores conversations between users and each conversation has `messages` stored as subcollections. The `medicalTranslations` documents are directly tied to bookings.\n\n**QAPs (Rules are not Filters):** The structure enables secure `list` operations. Listing experts or seekers does not require filtering on the client side. Security rules ensure that only authorized users can access specific data based on the paths and document content."
+  }
+}
