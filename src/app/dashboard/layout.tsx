@@ -59,7 +59,7 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
   };
 
   // While auth or profile is loading, show a full-screen loader.
-  if (isAuthLoading || isProfileLoading) {
+  if (isAuthLoading || (authUser && isProfileLoading)) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <p>Loading your dashboard...</p>
@@ -68,12 +68,15 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
   }
   
   const getInitials = (name: string) => {
+    if(!name) return 'U'
     const names = name.split(' ');
     if (names.length > 1) {
       return `${names[0][0]}${names[1][0]}`;
     }
     return name.substring(0, 2);
   }
+
+  const { pathname } = router;
 
   return (
     <SidebarProvider>
@@ -86,25 +89,25 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard" isActive={router.pathname === '/dashboard'} tooltip="Dashboard">
+              <SidebarMenuButton href="/dashboard" isActive={pathname === '/dashboard'} tooltip="Dashboard">
                 <LayoutDashboard />
                 <span>Dashboard</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/experts" tooltip="Experts">
+              <SidebarMenuButton href="/dashboard/experts" isActive={pathname.startsWith('/dashboard/experts')} tooltip="Experts">
                 <Users />
                 <span>Find Experts</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/bookings" tooltip="Bookings">
+              <SidebarMenuButton href="/dashboard/bookings" isActive={pathname.startsWith('/dashboard/bookings')} tooltip="Bookings">
                 <Calendar />
                 <span>Bookings</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/messages" tooltip="Messages">
+              <SidebarMenuButton href="/dashboard/messages" isActive={pathname.startsWith('/dashboard/messages')} tooltip="Messages">
                 <MessageSquare />
                 <span>Messages</span>
               </SidebarMenuButton>
@@ -125,7 +128,7 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
       <SidebarInset>
         <header className="flex h-20 items-center justify-between px-8 border-b w-full">
             <SidebarTrigger className="md:hidden"/>
-            <h1 className="text-3xl font-bold hidden md:block">Dashboard</h1>
+            <div className="flex-1" />
             <div className="ml-auto flex items-center gap-4">
             {userProfile ? (
                  <div className="flex items-center gap-3">
