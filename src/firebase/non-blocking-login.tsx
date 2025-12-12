@@ -11,7 +11,6 @@ import { toast } from '@/hooks/use-toast';
 /** Initiate anonymous sign-in (non-blocking). */
 export function initiateAnonymousSignIn(authInstance: Auth): void {
   signInAnonymously(authInstance).catch((error: FirebaseError) => {
-    console.error('Anonymous sign-in error:', error);
     toast({
       variant: 'destructive',
       title: 'Sign-in Failed',
@@ -27,7 +26,6 @@ export function initiateEmailSignUp(authInstance: Auth, email: string, password:
         // You can add post-signup logic here if needed, like creating a user doc.
     })
     .catch((error: FirebaseError) => {
-    console.error('Sign-up error:', error.code, error.message);
     let description = 'An unexpected error occurred. Please try again.';
     if (error.code === 'auth/email-already-in-use') {
       description = 'This email is already registered. Please log in.';
@@ -51,7 +49,6 @@ export function initiateEmailSignIn(authInstance: Auth, email: string, password:
         // Post-login logic can be handled by onAuthStateChanged listener
     })
     .catch((error: FirebaseError) => {
-    console.error('Sign-in error:', error.code, error.message);
     let description = 'An unexpected error occurred. Please try again.';
     if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
       description = 'Invalid email or password. Please check your credentials.';
