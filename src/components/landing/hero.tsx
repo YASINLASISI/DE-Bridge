@@ -39,11 +39,10 @@ const Hero = () => {
        <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-20 animate-gradient-shift"
+          className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzY1NTI4Mjc5fDA&ixlib=rb-4.1.0&q=80&w=1080')",
-            backgroundSize: '400% 400%',
           }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
@@ -65,7 +64,7 @@ const Hero = () => {
               className="font-headline text-5xl font-extrabold tracking-tight md:text-7xl"
             >
               Connect with Nigerian
-              <span className="block bg-gradient-to-r from-primary via-emerald-500 to-accent bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
                 Experts Abroad
               </span>
             </motion.h1>
