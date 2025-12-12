@@ -10,6 +10,7 @@ import { LayoutDashboard, Users, Calendar, MessageSquare, LogOut } from 'lucide-
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 // Define the User type based on your backend.json
 interface UserProfile {
@@ -31,11 +32,7 @@ const UserSkeleton = () => (
 )
 
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const auth = useAuth();
   const firestore = useFirestore();
@@ -157,4 +154,19 @@ export default function DashboardLayout({
       </SidebarInset>
     </SidebarProvider>
   );
+};
+
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <FirebaseClientProvider>
+      <AuthenticatedDashboardLayout>
+        {children}
+      </AuthenticatedDashboardLayout>
+    </FirebaseClientProvider>
+  )
 }
