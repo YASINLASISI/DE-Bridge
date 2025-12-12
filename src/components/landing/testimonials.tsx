@@ -70,7 +70,9 @@ export default function Testimonials() {
           className="text-center"
         >
           <h2 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Trusted by People Like You
+            <span className="block bg-gradient-to-r from-red-500 via-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
+              Trusted by People Like You
+            </span>
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
             Hear what our users are saying about their DE-Bridge experience.

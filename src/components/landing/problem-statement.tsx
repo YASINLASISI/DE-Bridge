@@ -43,7 +43,9 @@ const ProblemStatement = () => {
                 The Challenge
               </div>
               <h2 className="mt-4 font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
-                Turning Brain Drain into Brain Gain
+                <span className="block bg-gradient-to-r from-red-500 via-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
+                  Turning Brain Drain into Brain Gain
+                </span>
               </h2>
               <p className="mt-6 text-lg text-foreground/80">
                 Nigeria's greatest asset—its people—are making global impacts. Yet, access to this world-class expertise remains a challenge back home. DE-Bridge transforms this brain drain into a powerful network of knowledge exchange.

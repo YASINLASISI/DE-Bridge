@@ -52,7 +52,9 @@ export default function HowItWorks() {
       <div className="container mx-auto max-w-7xl px-4">
         <div className="text-center">
           <h2 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
-            Get Started in a Few Simple Steps
+            <span className="block bg-gradient-to-r from-red-500 via-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
+              Get Started in a Few Simple Steps
+            </span>
           </h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
             Connecting with world-class expertise has never been easier.
