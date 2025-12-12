@@ -63,7 +63,7 @@ export default function Header() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="text-sm font-bold text-foreground/80 hover:text-foreground transition-colors"
               >
                 {link.name}
               </Link>
@@ -83,10 +83,10 @@ export default function Header() {
             ) : (
               <>
                 <Link href="/login" passHref>
-                  <Button variant="ghost">Log In</Button>
+                  <Button variant="ghost" className="font-bold">Log In</Button>
                 </Link>
                 <Link href="/signup" passHref>
-                  <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
+                  <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md font-bold">
                     Sign Up
                   </Button>
                 </Link>
@@ -130,7 +130,7 @@ export default function Header() {
                   <Link
                     key={link.name}
                     href={link.href}
-                    className="text-lg font-medium"
+                    className="text-lg font-bold"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
@@ -143,19 +143,19 @@ export default function Header() {
                 ) : user ? (
                   <>
                     <Link href="/dashboard" passHref className="w-full">
-                      <Button variant="outline" className="w-full">Dashboard</Button>
+                      <Button variant="outline" className="w-full font-bold">Dashboard</Button>
                     </Link>
-                    <Button onClick={handleSignOut} className="w-full">
+                    <Button onClick={handleSignOut} className="w-full font-bold">
                       Sign Out
                     </Button>
                   </>
                 ) : (
                   <>
                     <Link href="/login" passHref className="w-full">
-                      <Button variant="outline" className="w-full">Log In</Button>
+                      <Button variant="outline" className="w-full font-bold">Log In</Button>
                     </Link>
                     <Link href="/signup" passHref className="w-full">
-                      <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
+                      <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md font-bold">
                         Sign Up
                       </Button>
                     </Link>

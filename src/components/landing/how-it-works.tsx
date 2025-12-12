@@ -56,7 +56,7 @@ export default function HowItWorks() {
               Get Started in a Few Simple Steps
             </span>
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-bold">
             Connecting with world-class expertise has never been easier.
           </p>
         </div>
@@ -86,7 +86,7 @@ export default function HowItWorks() {
                         </div>
                         <h3 className="text-2xl font-bold">{step.title}</h3>
                       </div>
-                      <p className="mt-4 text-foreground/70">{step.description}</p>
+                      <p className="mt-4 text-foreground/70 font-bold">{step.description}</p>
                     </div>
                   </div>
                   <div className="hidden md:block absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-primary ring-8 ring-background"></div>

@@ -35,7 +35,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32">
+    <section className="relative overflow-hidden pt-32 pb-20 md:pt-48 md:pb-32 bg-transparent">
       <div className="container mx-auto max-w-7xl px-4">
         <motion.div
           className="grid grid-cols-1 gap-12"
@@ -55,7 +55,7 @@ const Hero = () => {
 
             <motion.p
               variants={itemVariants}
-              className="mt-6 max-w-xl mx-auto text-lg text-foreground/80 md:text-xl"
+              className="mt-6 max-w-xl mx-auto text-lg text-foreground/80 md:text-xl font-bold"
             >
               DE-Bridge is your trusted platform for virtual consultations and mentorship with verified diaspora professionals. Get world-class advice, right from Nigeria.
             </motion.p>
@@ -64,10 +64,10 @@ const Hero = () => {
               variants={itemVariants}
               className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-lg transform hover:scale-105 transition-transform duration-200">
+              <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-lg transform hover:scale-105 transition-transform duration-200 font-bold">
                 Find an Expert <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="transform hover:scale-105 transition-transform duration-200">
+              <Button size="lg" variant="outline" className="transform hover:scale-105 transition-transform duration-200 font-bold">
                 Become an Expert
               </Button>
             </motion.div>
@@ -77,7 +77,7 @@ const Hero = () => {
               className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2"
             >
               {trustBadges.map((badge) => (
-                <div key={badge} className="flex items-center gap-2 text-sm text-foreground/60">
+                <div key={badge} className="flex items-center gap-2 text-sm text-foreground/60 font-bold">
                   <CheckCircle className="h-4 w-4 text-emerald-500" />
                   <span>{badge}</span>
                 </div>

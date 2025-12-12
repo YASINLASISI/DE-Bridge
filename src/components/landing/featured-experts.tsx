@@ -68,10 +68,10 @@ const ExpertCard = ({ expert, index, inView }: { expert: ExpertProfile; index: n
                       <span className="font-bold">{expert.rating}</span>
                     </div>
                     <span>·</span>
-                    <span>{expert.totalSessions}+ Sessions</span>
+                    <span className="font-bold">{expert.totalSessions}+ Sessions</span>
                   </div>
                 </div>
-                <Button className="mt-6 w-full">View Profile</Button>
+                <Button className="mt-6 w-full font-bold">View Profile</Button>
               </CardContent>
             </Card>
           </motion.div>
@@ -141,7 +141,7 @@ export default function FeaturedExperts() {
               Meet Our Top Experts
             </span>
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-bold">
             Handpicked professionals with proven track records and verified credentials.
           </p>
         </motion.div>

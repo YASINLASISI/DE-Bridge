@@ -74,7 +74,7 @@ export default function Testimonials() {
               Trusted by People Like You
             </span>
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-bold">
             Hear what our users are saying about their DE-Bridge experience.
           </p>
         </motion.div>
@@ -96,7 +96,7 @@ export default function Testimonials() {
                         <Star key={i} className="h-5 w-5 text-accent" fill="currentColor" />
                       ))}
                     </div>
-                    <blockquote className="mt-4 text-lg font-medium text-foreground">
+                    <blockquote className="mt-4 text-lg font-bold text-foreground">
                       "{testimonial.text}"
                     </blockquote>
                   </CardContent>
@@ -113,7 +113,7 @@ export default function Testimonials() {
                     )}
                     <div>
                       <p className="font-semibold">{testimonial.name}</p>
-                      <p className="text-sm text-foreground/60">{testimonial.role}</p>
+                      <p className="text-sm text-foreground/60 font-bold">{testimonial.role}</p>
                     </div>
                   </div>
                 </Card>

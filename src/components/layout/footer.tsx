@@ -46,14 +46,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
           <div className="lg:col-span-1">
             <Logo />
-            <p className="mt-4 text-sm text-foreground/60 max-w-xs">
+            <p className="mt-4 text-sm text-foreground/60 max-w-xs font-bold">
               Bridging the gap between Nigeria and its diaspora expertise.
             </p>
             <div className="mt-6">
               <h3 className="text-sm font-semibold">Stay Updated</h3>
               <form className="mt-2 flex gap-2">
                 <Input type="email" placeholder="Enter your email" className="max-w-xs"/>
-                <Button type="submit">Subscribe</Button>
+                <Button type="submit" className="font-bold">Subscribe</Button>
               </form>
             </div>
           </div>
@@ -64,7 +64,7 @@ export default function Footer() {
                 <ul className="mt-4 space-y-2">
                   {nav.items.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href} className="text-sm text-foreground/60 hover:text-foreground transition-colors">
+                      <Link href={item.href} className="text-sm text-foreground/60 hover:text-foreground transition-colors font-bold">
                         {item.name}
                       </Link>
                     </li>
@@ -75,7 +75,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-           <p className="text-sm text-foreground/60">
+           <p className="text-sm text-foreground/60 font-bold">
             &copy; {new Date().getFullYear()} DE-Bridge. All rights reserved.
           </p>
           <div className="flex gap-4">

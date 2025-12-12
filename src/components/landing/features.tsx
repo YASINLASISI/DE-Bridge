@@ -78,7 +78,7 @@ export default function Features() {
               A Platform Built for Trust and Excellence
             </span>
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
+          <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-bold">
             Every feature is designed to make your connection with diaspora experts seamless, secure, and impactful.
           </p>
         </div>
@@ -99,12 +99,12 @@ export default function Features() {
                       <div className="bg-primary/10 p-3 rounded-lg">
                         <Icon className="h-6 w-6 text-primary" />
                       </div>
-                      {feature.isNew && <Badge variant="secondary" className="bg-emerald-100 text-emerald-800">New</Badge>}
+                      {feature.isNew && <Badge variant="secondary" className="bg-emerald-100 text-emerald-800 font-bold">New</Badge>}
                     </div>
                   </CardHeader>
                   <CardContent>
                     <CardTitle className="text-xl font-bold mb-2">{feature.title}</CardTitle>
-                    <p className="text-foreground/70">{feature.description}</p>
+                    <p className="text-foreground/70 font-bold">{feature.description}</p>
                   </CardContent>
                 </Card>
               </motion.div>

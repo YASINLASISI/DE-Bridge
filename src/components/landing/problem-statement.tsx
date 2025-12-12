@@ -47,7 +47,7 @@ const ProblemStatement = () => {
                   Turning Brain Drain into Brain Gain
                 </span>
               </h2>
-              <p className="mt-6 text-lg text-foreground/80">
+              <p className="mt-6 text-lg text-foreground/80 font-bold">
                 Nigeria's greatest asset—its people—are making global impacts. Yet, access to this world-class expertise remains a challenge back home. DE-Bridge transforms this brain drain into a powerful network of knowledge exchange.
               </p>
               <div className="mt-8 space-y-6">
@@ -59,7 +59,7 @@ const ProblemStatement = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">Untapped Expertise</h3>
-                    <p className="mt-1 text-foreground/70">
+                    <p className="mt-1 text-foreground/70 font-bold">
                       Millions of talented Nigerians abroad, but a disconnect with those who need their skills at home.
                     </p>
                   </div>
@@ -72,7 +72,7 @@ const ProblemStatement = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold">Bridging the Gap</h3>
-                    <p className="mt-1 text-foreground/70">
+                    <p className="mt-1 text-foreground/70 font-bold">
                       We provide the digital infrastructure for seamless, secure, and impactful connections.
                     </p>
                   </div>
