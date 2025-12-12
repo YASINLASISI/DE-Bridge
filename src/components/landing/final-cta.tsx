@@ -23,7 +23,7 @@ export default function FinalCta() {
           variants={variants}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
-          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary to-blue-900 p-12 text-center"
+          className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary via-emerald-500 to-accent bg-[length:200%_auto] p-12 text-center animate-gradient-shift"
         >
           <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
           <div className="relative">
