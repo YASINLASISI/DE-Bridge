@@ -57,15 +57,19 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Expert",
       "type": "object",
-      "description": "Represents an expert on the DE-Bridge platform.",
+      "description": "Represents an expert on the DE-Bridge platform. This is a denormalized collection for public expert profiles.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the expert entity."
+          "description": "Unique identifier for the expert entity (matches the corresponding userId)."
         },
-        "userId": {
+        "name": {
           "type": "string",
-          "description": "Reference to User. (Relationship: User 1:1 Expert)"
+          "description": "The expert's full name (denormalized from User)."
+        },
+        "profilePhoto": {
+          "type": "string",
+          "description": "URL of the expert's profile photo (denormalized from User)."
         },
         "specialty": {
           "type": "string",
@@ -75,16 +79,9 @@
           "type": "string",
           "description": "The expert's field of expertise."
         },
-        "credentials": {
-          "type": "array",
-          "description": "URLs of the expert's credentials documents stored in Firebase Storage.",
-          "items": {
-            "type": "string"
-          }
-        },
         "verificationStatus": {
           "type": "string",
-          "description": "The verification status of the expert's credentials: 'pending', 'approved', or 'rejected'."
+          "description": "The verification status: 'pending', 'approved', or 'rejected'."
         },
         "hourlyRate": {
           "type": "number",
@@ -92,14 +89,7 @@
         },
         "currency": {
           "type": "string",
-          "description": "The currency in which the expert's hourly rate is specified."
-        },
-        "availableSlots": {
-          "type": "array",
-          "description": "Array of available time slots for the expert.",
-          "items": {
-            "type": "string"
-          }
+          "description": "The currency for the hourly rate."
         },
         "bio": {
           "type": "string",
@@ -118,24 +108,18 @@
         },
         "totalSessions": {
           "type": "number",
-          "description": "The total number of sessions the expert has conducted."
-        },
-        "earnings": {
-          "type": "number",
-          "description": "The expert's total earnings."
-        },
-        "pendingPayouts": {
-          "type": "number",
-          "description": "The expert's pending payouts."
+          "description": "The total number of sessions conducted."
         }
       },
       "required": [
         "id",
-        "userId",
+        "name",
         "specialty",
         "field",
         "hourlyRate",
-        "currency"
+        "currency",
+        "rating",
+        "totalSessions"
       ]
     },
     "Seeker": {
@@ -442,33 +426,37 @@
         }
       },
       {
-        "path": "/users/{userId}/expert",
+        "path": "/experts/{expertId}",
         "definition": {
           "entityName": "Expert",
           "schema": {
             "$ref": "#/backend/entities/Expert"
           },
-          "description": "Stores expert-specific data linked to the user. Requires user to be of 'expert' role.",
+          "description": "Stores public-facing, denormalized expert profiles for efficient querying and display. The document ID should match the user's UID.",
           "params": [
             {
-              "name": "userId",
-              "description": "The unique identifier for the user, acting as a foreign key to Expert."
+              "name": "expertId",
+              "description": "The unique identifier for the expert, same as their userId."
             }
           ]
         }
       },
       {
-        "path": "/users/{userId}/seeker",
+        "path": "/users/{userId}/seeker_details/{docId}",
         "definition": {
           "entityName": "Seeker",
           "schema": {
             "$ref": "#/backend/entities/Seeker"
           },
-          "description": "Stores seeker-specific data linked to the user. Requires user to be of 'seeker' role.",
+          "description": "Stores private seeker-specific data linked to a user. Requires user to be of 'seeker' role.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier for the user, acting as a foreign key to Seeker."
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "docId",
+              "description": "A document ID for seeker details."
             }
           ]
         }
@@ -574,6 +562,6 @@
         }
       }
     ],
-    "reasoning": "This Firestore structure is designed to support the DE-Bridge platform, emphasizing secure and scalable data management. It incorporates key principles like Authorization Independence through denormalization, Structural Segregation for consistent security, and standardized Access Modeling.  The structure includes collections for `users`, `experts`, `seekers`, `bookings`, `messages`, `reviews`, `medicalTranslations`, and `conversations`.  User-owned data (experts and seekers) are stored in subcollections of the `users` collection to leverage path-based security rules.\n\n**Authorization Independence:** To ensure authorization independence, the `bookings` collection includes the `seekerId` and `expertId` fields, which allows security rules to validate a user's access to a booking without needing to perform additional `get()` operations. The `messages` subcollection under `conversations` also achieves this, since `senderId` and `receiverId` in the message documents are used to validate access, independent of parent documents.\n\n**Structural Segregation:** Segregation is evident in the separation of `experts` and `seekers` data from the main `users` collection. While basic user info resides in `users`, specific details are kept separate to align with different security requirements. Admin roles are handled via existence checks in dedicated collections (e.g., `roles_admin/{uid}`).\n\n**Access Modeling:** The structure follows a hierarchical path-based ownership model for user-owned data. For example, bookings are linked to both seekers and experts via `seekerId` and `expertId` fields, which is used for security rule evaluations. The `conversations` collection stores conversations between users and each conversation has `messages` stored as subcollections. The `medicalTranslations` documents are directly tied to bookings.\n\n**QAPs (Rules are not Filters):** The structure enables secure `list` operations. Listing experts or seekers does not require filtering on the client side. Security rules ensure that only authorized users can access specific data based on the paths and document content."
+    "reasoning": "This Firestore structure is designed to support the DE-Bridge platform, emphasizing secure and scalable data management. It incorporates key principles like Authorization Independence through denormalization, Structural Segregation for consistent security, and standardized Access Modeling. A top-level `experts` collection is introduced to allow for efficient querying of all public expert profiles, which is a common requirement for the platform's 'Find an Expert' feature. This avoids costly and complex queries on the `users` collection. User-specific private data (like `seeker_details`) remains in subcollections under `/users/{userId}` to leverage path-based security rules. Shared resources like `bookings`, `conversations`, and `reviews` remain in top-level collections with denormalized IDs to facilitate secure access control."
   }
 }

@@ -1,14 +1,14 @@
 /**
- * Core Philosophy: This ruleset enforces a strict, user-centric security model. Data is primarily accessed based on explicit user ownership or documented participation in a shared resource (like a booking or conversation). A separate `roles_admin` collection provides a mechanism for administrative override access.
+ * Core Philosophy: This ruleset enforces a strict, user-centric security model. Data is primarily accessed based on explicit user ownership or documented participation in a shared resource. A separate `roles_admin` collection provides administrative override.
  *
- * Data Structure: User data is organized hierarchically under `/users/{userId}`, with role-specific profiles (expert, seeker) in subcollections. Shared data entities like `bookings`, `conversations`, and `reviews` exist in top-level collections.
+ * Data Structure: User data is in `/users/{userId}`. Public expert profiles are in a denormalized `/experts/{expertId}` collection for efficient public listing. Shared data like `bookings` and `conversations` are in top-level collections.
  *
  * Key Security Decisions:
+ * - Public Listing for Experts: The `/experts` collection is readable by anyone to allow browsing, but writable only by the expert themselves or an admin. This is a key change for performance.
  * - User Enumeration is Disabled: `list` operations on the top-level `/users` collection are disallowed to protect user privacy.
  * - Default Deny: Access is denied by default. All permissions must be explicitly granted.
- * - Admin Override: Users whose UID exists in the `/roles_admin` collection have full read/write access to the database for administrative purposes.
- * - Shared Access via Denormalization: Access to shared documents like bookings and conversations is controlled by denormalized ID fields (`seekerId`, `expertId`, `participantIds`) directly on the documents. This avoids slow and costly `get` calls in rules for primary access control. Subcollection access (e.g., messages) necessarily uses `get` to check permissions on the parent document.
- * - Public vs. Private Data: Collections containing sensitive information (`bookings`, `conversations`, `medicalTranslations`) are not publicly listable. Collections intended for public viewing (`reviews`) allow global read access but restrict writes to the content owner.
+ * - Admin Override: Users whose UID exists in the `/roles_admin` collection have broad read/write access.
+ * - Shared Access via Denormalization: Access to shared documents (bookings, conversations) is controlled by denormalized ID fields (`seekerId`, `expertId`, `participantIds`) on the documents themselves.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -18,120 +18,68 @@ service cloud.firestore {
     // Helper Functions
     // --------------------------------
 
-    /**
-     * Checks if the user is authenticated.
-     */
     function isSignedIn() {
       return request.auth != null;
     }
 
-    /**
-     * Checks if the user has an admin role.
-     * Admin status is conferred by the existence of a document in the /roles_admin collection.
-     */
     function isAdmin() {
       return exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
     }
 
-    /**
-     * Checks if the requesting user's UID matches the provided userId.
-     * This is the primary function for enforcing document ownership.
-     */
     function isOwner(userId) {
       return request.auth.uid == userId;
     }
-
-    /**
-     * Ensures an operation is performed by the owner on an existing document.
-     * Prevents modifying or deleting non-existent data.
-     */
+    
     function isExistingOwner(userId) {
       return isOwner(userId) && resource != null;
     }
 
-    /**
-     * Checks if the requesting user is a participant (seeker or expert) in a booking.
-     */
     function isBookingParticipant(bookingData) {
       return request.auth.uid == bookingData.seekerId || request.auth.uid == bookingData.expertId;
     }
 
-    /**
-     * Checks if the requesting user is a participant in a conversation.
-     */
     function isConversationParticipant(conversationData) {
       return request.auth.uid == conversationData.participant1Id || request.auth.uid == conversationData.participant2Id;
     }
 
-    /**
-     * Checks if a user is a participant in a booking related to another document (e.g., a medical translation).
-     * This requires an additional document read (`get`) to enforce security.
-     */
     function isRelatedBookingParticipant(docData) {
       let bookingDoc = get(/databases/$(database)/documents/bookings/$(docData.bookingId)).data;
       return isBookingParticipant(bookingDoc);
     }
 
     // --------------------------------
-    // User Collections
+    // User & Profile Collections
     // --------------------------------
 
-    /**
-     * @description A user can create their own profile, and read or write only their own data.
-     * @path /users/{userId}
-     * @allow (get, update) by user 'user_abc' on path '/users/user_abc'.
-     * @deny (get) by user 'user_xyz' on path '/users/user_abc'.
-     * @deny (list) by any user on path '/users'.
-     * @principle Restricts access to a user's own data tree and prevents user enumeration.
-     */
     match /users/{userId} {
       allow get: if isOwner(userId) || isAdmin();
-      allow list: if false;
+      allow list: if false; // Prevent user enumeration
       allow create: if isOwner(userId) && request.resource.data.id == userId;
       allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
       allow delete: if isExistingOwner(userId) || isAdmin();
     }
-
-    /**
-     * @description An expert profile can only be managed by the parent user account owner.
-     * @path /users/{userId}/expert/{docId}
-     * @allow (create, update) by user 'user_abc' on path '/users/user_abc/expert/profile_doc'.
-     * @deny (get, list, write) by user 'user_xyz' on path '/users/user_abc/expert/profile_doc'.
-     * @principle Enforces hierarchical ownership from the parent user document.
-     */
-    match /users/{userId}/expert/{docId} {
-      allow get, list: if isOwner(userId) || isAdmin();
-      allow create: if isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId) || isAdmin();
+    
+    match /users/{userId}/seeker_details/{docId} {
+      allow read, write: if isOwner(userId) || isAdmin();
     }
 
     /**
-     * @description A seeker profile can only be managed by the parent user account owner.
-     * @path /users/{userId}/seeker/{docId}
-     * @allow (create, update) by user 'user_abc' on path '/users/user_abc/seeker/profile_doc'.
-     * @deny (get, list, write) by user 'user_xyz' on path '/users/user_abc/seeker/profile_doc'.
-     * @principle Enforces hierarchical ownership from the parent user document.
+     * @description Publicly readable expert profiles for browsing, but only the owner can modify their own profile.
+     * @path /experts/{expertId}
+     * @allow (get, list) by any user for browsing experts.
+     * @allow (create, update) only by the user who owns the expert profile.
+     * @principle Separates public queryable data from private user data for performance and security.
      */
-    match /users/{userId}/seeker/{docId} {
-      allow get, list: if isOwner(userId) || isAdmin();
-      allow create: if isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId) || isAdmin();
+    match /experts/{expertId} {
+      allow get, list: if true;
+      allow create, update: if isOwner(expertId) || isAdmin();
+      allow delete: if isOwner(expertId) || isAdmin();
     }
 
     // --------------------------------
     // App Collections
     // --------------------------------
 
-    /**
-     * @description Only the seeker or expert involved in a booking can access its details.
-     * @path /bookings/{bookingId}
-     * @allow (get) by user 'seeker_123' on a booking where `resource.data.seekerId == 'seeker_123'`.
-     * @deny (get) by user 'other_user' on a booking where they are not a participant.
-     * @deny (list) on the '/bookings' collection to prevent data leakage.
-     * @principle Enforces shared access for closed collaborators using denormalized IDs.
-     */
     match /bookings/{bookingId} {
       allow get: if (resource != null && isBookingParticipant(resource.data)) || isAdmin();
       allow list: if false;
@@ -139,14 +87,6 @@ service cloud.firestore {
       allow update, delete: if (resource != null && isBookingParticipant(resource.data)) || isAdmin();
     }
 
-    /**
-     * @description Only the two participants of a conversation can access it.
-     * @path /conversations/{conversationId}
-     * @allow (get) by user 'user_abc' on a conversation where `resource.data.participant1Id == 'user_abc'`.
-     * @deny (get) by user 'user_xyz' on a conversation they are not part of.
-     * @deny (list) on the '/conversations' collection.
-     * @principle Enforces shared access for closed collaborators.
-     */
     match /conversations/{conversationId} {
       allow get: if (resource != null && isConversationParticipant(resource.data)) || isAdmin();
       allow list: if false;
@@ -154,42 +94,18 @@ service cloud.firestore {
       allow update, delete: if (resource != null && isConversationParticipant(resource.data)) || isAdmin();
     }
 
-    /**
-     * @description Only conversation participants can read messages. Only the sender can create/write them.
-     * @path /conversations/{conversationId}/messages/{messageId}
-     * @allow (get, list) by a user who is a participant in the parent conversation `conversationId`.
-     * @allow (create) by a user who is a participant and the `senderId` of the new message.
-     * @deny (update, delete) by the message receiver.
-     * @principle Secures a subcollection by checking permissions on the parent document.
-     */
     match /conversations/{conversationId}/messages/{messageId} {
       allow get, list: if isConversationParticipant(get(/databases/$(database)/documents/conversations/$(conversationId)).data) || isAdmin();
       allow create: if isConversationParticipant(get(/databases/$(database)/documents/conversations/$(conversationId)).data) && isOwner(request.resource.data.senderId);
       allow update, delete: if (isExistingOwner(resource.data.senderId)) || isAdmin();
     }
 
-    /**
-     * @description Reviews are public to read, but can only be created, updated, or deleted by their author.
-     * @path /reviews/{reviewId}
-     * @allow (get, list) by any user, including anonymous users.
-     * @allow (create) by authenticated user 'reviewer_123' setting `reviewerId` to 'reviewer_123'.
-     * @deny (update, delete) by any user who is not the original reviewer.
-     * @principle Implements a "Public Read with Owner-Only Writes" security model.
-     */
     match /reviews/{reviewId} {
       allow get, list: if true;
       allow create: if isSignedIn() && isOwner(request.resource.data.reviewerId);
       allow update, delete: if (isExistingOwner(resource.data.reviewerId)) || isAdmin();
     }
 
-    /**
-     * @description Access to a medical translation is granted only to participants of the associated booking.
-     * @path /medicalTranslations/{translationId}
-     * @allow (get) by user 'seeker_123' on a translation linked to a booking where they are a participant.
-     * @deny (get) by any user not involved in the source booking.
-     * @deny (list) to prevent enumeration of sensitive documents.
-     * @principle Enforces security by checking permissions on a related document.
-     */
     match /medicalTranslations/{translationId} {
       allow get: if (resource != null && isRelatedBookingParticipant(resource.data)) || isAdmin();
       allow list: if false;
@@ -197,16 +113,8 @@ service cloud.firestore {
       allow update, delete: if (resource != null && isRelatedBookingParticipant(resource.data)) || isAdmin();
     }
 
-    /**
-     * @description Only existing administrators can manage the list of admins.
-     * @path /roles_admin/{userId}
-     * @allow (get, list, write) by any user whose UID exists in another document in this collection.
-     * @deny (get, list, write) by any non-admin user.
-     * @principle Restricts sensitive operations to users with a specific role.
-     */
     match /roles_admin/{userId} {
-      allow get, list: if isAdmin();
-      allow create, update, delete: if isAdmin();
+      allow read, write: if isAdmin();
     }
   }
 }
