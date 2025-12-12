@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
@@ -34,6 +34,7 @@ const UserSkeleton = () => (
 
 const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const auth = useAuth();
   const firestore = useFirestore();
   const { user: authUser, isUserLoading: isAuthLoading } = useUser();
@@ -75,8 +76,6 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
     }
     return name.substring(0, 2);
   }
-
-  const { pathname } = router;
 
   return (
     <SidebarProvider>
