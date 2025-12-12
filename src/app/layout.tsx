@@ -5,6 +5,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'DE-Bridge: Diaspora Expertise Network',
@@ -31,7 +32,17 @@ export default function RootLayout({
       </head>
       <body className={cn('font-body antialiased')} suppressHydrationWarning>
         <FirebaseClientProvider>
-          <div className="flex min-h-screen flex-col bg-background">
+          <div className="fixed inset-0 -z-10">
+            <Image
+              src="https://images.unsplash.com/photo-1483728642387-6c351b4d1cb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMHBlYWt8ZW58MHx8fHwxNzE2NDAxODE0fDA&ixlib=rb-4.0.3&q=80&w=1920"
+              alt="Mountain peak background"
+              fill
+              className="object-cover"
+              data-ai-hint="mountain landscape"
+            />
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm"></div>
+          </div>
+          <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
