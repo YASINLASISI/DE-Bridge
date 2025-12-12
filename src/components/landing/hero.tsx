@@ -1,11 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const trustBadges = [
   'Verified Professionals',
@@ -14,8 +12,6 @@ const trustBadges = [
 ];
 
 const Hero = () => {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-consultation');
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -43,26 +39,27 @@ const Hero = () => {
        <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
+          className="absolute inset-0 bg-cover bg-center opacity-20 animate-gradient-shift"
           style={{
             backgroundImage:
               "url('https://images.unsplash.com/photo-1543286386-2e659306cd6c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzY1NTI4Mjc5fDA&ixlib=rb-4.1.0&q=80&w=1080')",
+            backgroundSize: '400% 400%',
           }}
         ></div>
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background"></div>
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full filter blur-3xl opacity-40 animate-blob"></div>
-        <div className="absolute top-20 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-40 animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full filter blur-3xl opacity-40 animate-blob" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-accent/10 rounded-full filter blur-3xl opacity-40 animate-blob" style={{animationDelay: '4s'}}></div>
       </div>
 
       <div className="container mx-auto max-w-7xl px-4">
         <motion.div
-          className="grid grid-cols-1 gap-12 lg:grid-cols-2"
+          className="grid grid-cols-1 gap-12"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="flex flex-col justify-center text-center lg:text-left">
+          <div className="flex flex-col justify-center text-center">
             <motion.h1
               variants={itemVariants}
               className="font-headline text-5xl font-extrabold tracking-tight md:text-7xl"
@@ -75,14 +72,14 @@ const Hero = () => {
 
             <motion.p
               variants={itemVariants}
-              className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg text-foreground/80 md:text-xl"
+              className="mt-6 max-w-xl mx-auto text-lg text-foreground/80 md:text-xl"
             >
               DE-Bridge is your trusted platform for virtual consultations and mentorship with verified diaspora professionals. Get world-class advice, right from Nigeria.
             </motion.p>
 
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              className="mt-8 flex flex-col sm:flex-row gap-4 justify-center"
             >
               <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-lg transform hover:scale-105 transition-transform duration-200">
                 Find an Expert <ArrowRight className="ml-2 h-5 w-5" />
@@ -94,7 +91,7 @@ const Hero = () => {
 
             <motion.div
               variants={itemVariants}
-              className="mt-8 flex flex-wrap justify-center lg:justify-start gap-x-6 gap-y-2"
+              className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2"
             >
               {trustBadges.map((badge) => (
                 <div key={badge} className="flex items-center gap-2 text-sm text-foreground/60">
@@ -104,29 +101,6 @@ const Hero = () => {
               ))}
             </motion.div>
           </div>
-
-          <motion.div
-            variants={itemVariants}
-            className="relative flex items-center justify-center"
-          >
-            {heroImage && (
-               <motion.div
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="relative aspect-[3/2] w-full max-w-xl mx-auto rounded-2xl shadow-2xl"
-               >
-                <Image
-                    src={heroImage.imageUrl}
-                    alt={heroImage.description}
-                    fill
-                    className="object-cover rounded-2xl"
-                    data-ai-hint={heroImage.imageHint}
-                    priority
-                />
-                <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-foreground/10"></div>
-              </motion.div>
-            )}
-          </motion.div>
         </motion.div>
       </div>
     </section>
