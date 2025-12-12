@@ -93,7 +93,7 @@ export default function DashboardLayout({
                 <LayoutDashboard />
                 <span>Dashboard</span>
               </SidebarMenuButton>
-            </SPIdebarMenuItem>
+            </SidebarMenuItem>
              <SidebarMenuItem>
               <SidebarMenuButton href="/dashboard/experts" tooltip="Experts">
                 <Users />
