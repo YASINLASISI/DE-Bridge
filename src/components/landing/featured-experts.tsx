@@ -128,7 +128,7 @@ export default function FeaturedExperts() {
   const { data: experts, isLoading } = useCollection<ExpertProfile>(expertsQuery);
 
   return (
-    <section ref={ref} className="py-20 md:py-32 bg-secondary/50">
+    <section ref={ref} className="py-20 md:py-32 bg-transparent">
       <div className="container mx-auto max-w-7xl px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

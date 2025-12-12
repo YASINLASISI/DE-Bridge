@@ -29,7 +29,7 @@ const ProblemStatement = () => {
   };
 
   return (
-    <section ref={ref} className="py-20 md:py-32 bg-background">
+    <section ref={ref} className="py-20 md:py-32 bg-transparent">
       <div className="container mx-auto max-w-7xl px-4">
         <motion.div
           className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"

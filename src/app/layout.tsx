@@ -34,11 +34,11 @@ export default function RootLayout({
         <FirebaseClientProvider>
           <div className="fixed inset-0 -z-10">
             <Image
-              src="https://images.unsplash.com/photo-1483728642387-6c351b4d1cb1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb3VudGFpbiUyMHBlYWt8ZW58MHx8fHwxNzE2NDAxODE0fDA&ixlib=rb-4.0.3&q=80&w=1920"
-              alt="Mountain peak background"
+              src="https://images.unsplash.com/photo-1521747116042-5a810fda9664?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxnb3VnZSUyMGR1JTIwdmVyZG9uJTIwcm9hZHxlbnwwfHx8fDE3MjE0MDQ3OTB8MA&ixlib=rb-4.0.3&q=80&w=1920"
+              alt="A winding road through a lush green mountain valley"
               fill
               className="object-cover"
-              data-ai-hint="mountain landscape"
+              data-ai-hint="mountain road landscape"
             />
             <div className="absolute inset-0 bg-background/80 backdrop-blur-sm"></div>
           </div>

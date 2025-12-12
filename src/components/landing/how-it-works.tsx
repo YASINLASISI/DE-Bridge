@@ -48,7 +48,7 @@ export default function HowItWorks() {
   };
 
   return (
-    <section ref={ref} className="py-20 md:py-32 bg-background">
+    <section ref={ref} className="py-20 md:py-32 bg-transparent">
       <div className="container mx-auto max-w-7xl px-4">
         <div className="text-center">
           <h2 className="font-headline text-4xl font-extrabold tracking-tight sm:text-5xl">
