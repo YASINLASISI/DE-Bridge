@@ -64,10 +64,14 @@ export default function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-2">
-            <Button variant="ghost">Log In</Button>
-            <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
-              Sign Up
-            </Button>
+            <Link href="/login" passHref>
+              <Button variant="ghost">Log In</Button>
+            </Link>
+            <Link href="/signup" passHref>
+              <Button className="bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
+                Sign Up
+              </Button>
+            </Link>
           </div>
 
           <div className="md:hidden">
@@ -114,10 +118,14 @@ export default function Header() {
                 ))}
               </nav>
               <div className="p-6 space-y-3 border-t">
-                <Button variant="outline" className="w-full">Log In</Button>
-                <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
-                  Sign Up
-                </Button>
+                <Link href="/login" passHref className="w-full">
+                  <Button variant="outline" className="w-full">Log In</Button>
+                </Link>
+                <Link href="/signup" passHref className="w-full">
+                  <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-primary-foreground hover:from-emerald-600 hover:to-teal-700 shadow-md">
+                    Sign Up
+                  </Button>
+                </Link>
               </div>
             </motion.div>
           </motion.div>
