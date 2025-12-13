@@ -1,25 +1,17 @@
 'use client';
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useEffect } from 'react';
-import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { useUser, useAuth } from '@/firebase';
 import { SidebarProvider, Sidebar, SidebarTrigger, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LayoutDashboard, Users, Calendar, MessageSquare, LogOut, User, Lightbulb, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, MessageSquare, LogOut, User, Lightbulb, Bell, FolderKanban, CreditCard, Settings, ChevronDown, LogOutIcon, UserCog, LifeBuoy } from 'lucide-react';
 import Logo from '@/components/logo';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
-
-// Define the User type based on your backend.json
-interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  role: 'seeker' | 'expert';
-  profilePhoto?: string;
-}
+import { mockUser } from '@/lib/mock-data';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 const UserSkeleton = () => (
     <div className="flex items-center gap-3">
@@ -31,39 +23,40 @@ const UserSkeleton = () => (
     </div>
 )
 
-
 const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const auth = useAuth();
-  const firestore = useFirestore();
   const { user: authUser, isUserLoading: isAuthLoading } = useUser();
-
-  // Create a memoized reference to the user's document
-  const userDocRef = useMemoFirebase(() => {
-    if (!firestore || !authUser) return null;
-    return doc(firestore, 'users', authUser.uid);
-  }, [firestore, authUser]);
-
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc<UserProfile>(userDocRef);
+  const [userProfile, setUserProfile] = useState(mockUser);
+  const [isProfileLoading, setProfileLoading] = useState(true);
 
   useEffect(() => {
     // If auth has finished loading and there's no authenticated user, redirect to login.
     if (!isAuthLoading && !authUser) {
       router.push('/login');
     }
+    // Simulate profile loading
+    if(authUser) {
+        setTimeout(() => {
+            setUserProfile(mockUser);
+            setProfileLoading(false);
+        }, 500);
+    }
   }, [authUser, isAuthLoading, router]);
 
 
   const handleSignOut = () => {
-    auth.signOut().then(() => router.push('/'));
+    auth?.signOut().then(() => router.push('/'));
   };
 
-  // While auth or profile is loading, show a full-screen loader.
   if (isAuthLoading || (authUser && isProfileLoading && !userProfile)) {
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <p>Loading your dashboard...</p>
+      <div className="flex h-screen w-full items-center justify-center bg-background">
+        <div className='flex flex-col items-center gap-4'>
+            <Logo />
+            <p className="text-muted-foreground">Loading your dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -80,6 +73,19 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
 
   const displayName = userProfile?.name || authUser?.displayName || authUser?.email;
   const displayEmail = userProfile?.email || authUser?.email;
+  const profilePhoto = userProfile?.profilePhoto || authUser?.photoURL;
+
+  const sidebarNavItems = [
+    { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
+    { href: "/dashboard/experts", icon: Users, label: "Find Experts" },
+    { href: "/dashboard/bookings", icon: Calendar, label: "Bookings" },
+    { href: "/dashboard/messages", icon: MessageSquare, label: "Messages" },
+    { href: "/dashboard/documents", icon: FolderKanban, label: "My Documents" },
+    { href: "/dashboard/recommendations", icon: Lightbulb, label: "Recommendations" },
+    { href: "/dashboard/notifications", icon: Bell, label: "Notifications" },
+    { href: "/dashboard/payments", icon: CreditCard, label: "Payment Methods" },
+    { href: "/dashboard/settings", icon: Settings, label: "Settings" },
+  ];
 
   return (
     <SidebarProvider>
@@ -91,48 +97,14 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard" isActive={pathname === '/dashboard'} tooltip="Dashboard">
-                <LayoutDashboard />
-                <span>Dashboard</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/experts" isActive={pathname?.startsWith('/dashboard/experts')} tooltip="Find Experts">
-                <Users />
-                <span>Find Experts</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/bookings" isActive={pathname?.startsWith('/dashboard/bookings')} tooltip="Bookings">
-                <Calendar />
-                <span>Bookings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/messages" isActive={pathname?.startsWith('/dashboard/messages')} tooltip="Messages">
-                <MessageSquare />
-                <span>Messages</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/profile" isActive={pathname?.startsWith('/dashboard/profile')} tooltip="Profile Management">
-                <User />
-                <span>Profile</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/recommendations" isActive={pathname?.startsWith('/dashboard/recommendations')} tooltip="Smart Recommendations">
-                <Lightbulb />
-                <span>Recommendations</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/notifications" isActive={pathname?.startsWith('/dashboard/notifications')} tooltip="Notifications">
-                <Bell />
-                <span>Notifications</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
+            {sidebarNavItems.map(item => (
+                 <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton href={item.href} isActive={pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href))} tooltip={item.label}>
+                        <item.icon />
+                        <span>{item.label}</span>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            ))}
           </SidebarMenu>
         </SidebarContent>
         <SidebarFooter>
@@ -147,27 +119,56 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-20 items-center justify-between px-8 border-b w-full">
+        <header className="flex h-20 items-center justify-between px-4 md:px-8 border-b w-full bg-background/50 backdrop-blur-sm sticky top-0 z-10">
             <SidebarTrigger className="md:hidden"/>
             <div className="flex-1" />
             <div className="ml-auto flex items-center gap-4">
+                <Button variant="ghost" size="icon">
+                    <Bell className='h-5 w-5' />
+                </Button>
             {isAuthLoading || isProfileLoading ? (
                  <UserSkeleton />
             ) : authUser && (
-                 <div className="flex items-center gap-3">
-                    <Avatar>
-                        <AvatarImage src={userProfile?.profilePhoto} alt={displayName || ''} />
-                        <AvatarFallback>{getInitials(displayName || '')}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="font-semibold text-sm">{displayName}</p>
-                        <p className="text-xs text-foreground/70">{displayEmail}</p>
-                    </div>
-                 </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                         <button className="flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 rounded-full">
+                            <Avatar className='h-10 w-10 border-2 border-primary/50'>
+                                <AvatarImage src={profilePhoto} alt={displayName || ''} />
+                                <AvatarFallback>{getInitials(displayName || '')}</AvatarFallback>
+                            </Avatar>
+                            <div className='hidden md:block text-left'>
+                                <p className="font-semibold text-sm">{displayName}</p>
+                                <p className="text-xs text-muted-foreground">{displayEmail}</p>
+                            </div>
+                            <ChevronDown className='h-4 w-4 text-muted-foreground hidden md:block' />
+                         </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='end' className='w-56'>
+                        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
+                            <UserCog className='mr-2' />
+                            <span>Profile</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => router.push('/dashboard/settings')}>
+                            <Settings className='mr-2'/>
+                           <span>Settings</span>
+                        </DropdownMenuItem>
+                         <DropdownMenuItem>
+                            <LifeBuoy className='mr-2'/>
+                           <span>Support</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                         <DropdownMenuItem onClick={handleSignOut}>
+                             <LogOutIcon className='mr-2' />
+                            <span>Log Out</span>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             )}
             </div>
         </header>
-        <main className="flex-1 p-4 md:p-8">{children}</main>
+        <main className="flex-1 p-4 md:p-8 bg-muted/40">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

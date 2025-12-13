@@ -4,48 +4,85 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 215 47% 11%;
-    --card: 210 40% 100%;
-    --card-foreground: 215 47% 11%;
-    --popover: 210 40% 100%;
-    --popover-foreground: 215 47% 11%;
-    --primary: 222 69% 43%;
+    --background: 222 47% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 222 47% 100%;
+    --card-foreground: 222 47% 11%;
+ 
+    --popover: 222 47% 100%;
+    --popover-foreground: 222 47% 11%;
+ 
+    --primary: 221 83% 53%; /* Deep Blue #1E40AF -> hsl(222, 69%, 43%) but using a brighter blue for better visibility: #3B82F6 -> hsl(217, 91%, 60%) but that is too bright. Settling on #2563EB -> hsl(221, 83%, 53%) */
     --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 215 47% 11%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215 47% 45%;
-    --accent: 38 92% 52%;
-    --accent-foreground: 215 47% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 210 40% 89.8%;
-    --input: 210 40% 89.8%;
-    --ring: 222 69% 43%;
+ 
+    --secondary: 158 79% 42%; /* Emerald Green #10B981 -> hsl(158, 79%, 42%) */
+    --secondary-foreground: 210 40% 98%;
+ 
+    --muted: 222 47% 95%;
+    --muted-foreground: 222 47% 45%;
+ 
+    --accent: 38 92% 56%; /* Warm Orange #F59E0B -> hsl(38, 92%, 52%) */
+    --accent-foreground: 222 47% 11%;
+ 
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 222 47% 89%;
+    --input: 222 47% 89%;
+    --ring: 221 83% 53%;
+ 
     --radius: 0.75rem;
+
+    /* Custom Sidebar Colors */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 222 47% 85%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 221 83% 53%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 47% 20%;
+    --sidebar-ring: 221 83% 63%;
   }
  
   .dark {
-    --background: 215 47% 11%;
-    --foreground: 210 40% 98%;
-    --card: 215 47% 15%;
-    --card-foreground: 210 40% 98%;
-    --popover: 215 47% 11%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 222 69% 55%;
-    --primary-foreground: 215 47% 11%;
-    --secondary: 215 47% 18%;
+    --background: 222 47% 11%;
+    --foreground: 222 47% 98%;
+
+    --card: 222 47% 15%;
+    --card-foreground: 222 47% 98%;
+ 
+    --popover: 222 47% 11%;
+    --popover-foreground: 222 47% 98%;
+ 
+    --primary: 221 83% 63%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 158 79% 52%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 215 47% 18%;
-    --muted-foreground: 215 47% 65%;
-    --accent: 38 92% 60%;
-    --accent-foreground: 215 47% 11%;
-    --destructive: 0 62.8% 30.6%;
+ 
+    --muted: 222 47% 20%;
+    --muted-foreground: 222 47% 65%;
+ 
+    --accent: 38 92% 58%;
+    --accent-foreground: 222 47% 11%;
+ 
+    --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 98%;
-    --border: 215 47% 20%;
-    --input: 215 47% 20%;
-    --ring: 222 69% 55%;
+ 
+    --border: 222 47% 25%;
+    --input: 222 47% 25%;
+    --ring: 221 83% 63%;
+
+    /* Custom Sidebar Dark Colors */
+    --sidebar-background: 222 47% 9%;
+    --sidebar-foreground: 222 47% 85%;
+    --sidebar-primary: 210 40% 98%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 221 83% 63%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 47% 15%;
+    --sidebar-ring: 221 83% 73%;
   }
 }
  

@@ -6,35 +6,24 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Star, Verified, ArrowRight } from 'lucide-react';
-
-type ExpertProfile = {
-  id: string;
-  name: string;
-  specialty: string;
-  field: string;
-  hourlyRate: number;
-  currency: string;
-  rating: number;
-  totalSessions: number;
-  profilePhoto?: string;
-  isAvailableNow?: boolean;
-};
+import type { Expert } from '@/lib/mock-data';
+import Link from 'next/link';
 
 interface ExpertCardProps {
-  expert: ExpertProfile;
+  expert: Expert;
   viewMode?: 'grid' | 'list';
 }
 
 const getInitials = (name: string) => {
     if (!name) return 'EX';
     const names = name.split(' ');
-    if (names.length > 1) {
+    if (names.length > 1 && names[0] && names[1]) {
       return `${names[0][0]}${names[1][0]}`;
     }
     return name.substring(0, 2);
 };
 
-const GridViewCard = ({ expert }: { expert: ExpertProfile }) => (
+const GridViewCard = ({ expert }: { expert: Expert }) => (
     <Card className="h-full flex flex-col group overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
         <CardContent className="p-6 text-center flex flex-col flex-grow">
              <div className="relative mx-auto">
@@ -43,30 +32,36 @@ const GridViewCard = ({ expert }: { expert: ExpertProfile }) => (
                     <AvatarFallback>{getInitials(expert.name)}</AvatarFallback>
                 </Avatar>
                 {expert.isAvailableNow && (
-                    <span className="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-emerald-500 ring-2 ring-background" title="Available Now" />
+                    <span className="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-secondary ring-2 ring-background" title="Available Now" />
                 )}
             </div>
             <h3 className="mt-4 text-xl font-bold flex items-center justify-center gap-1.5">
                 {expert.name} <Verified className="h-5 w-5 text-primary" />
             </h3>
             <p className="text-sm font-medium text-primary">{expert.specialty}</p>
+            <p className="text-xs text-muted-foreground">{expert.workplace}</p>
+            
             <div className="my-4 flex items-center justify-center gap-4 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                     <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
                     <span className="font-semibold">{expert.rating.toFixed(1)}</span>
-                    <span className="text-xs">({expert.totalSessions})</span>
+                    <span className="text-xs">({expert.reviews} reviews)</span>
                 </div>
             </div>
-            <p className="text-lg font-bold flex-grow">
-                 {new Intl.NumberFormat('en-US', { style: 'currency', currency: expert.currency, maximumFractionDigits: 0 }).format(expert.hourlyRate)}/hr
+
+            <p className="text-lg font-bold flex-grow text-foreground/80">
+                 {new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(expert.hourlyRate)}/hr
             </p>
-            <Button className="mt-4 w-full font-bold">Book Consultation</Button>
+            
+            <Button asChild className="mt-4 w-full font-bold">
+                <Link href={`/dashboard/book/${expert.id}`}>Book Consultation</Link>
+            </Button>
         </CardContent>
     </Card>
 );
 
-const ListViewCard = ({ expert }: { expert: ExpertProfile }) => (
-     <Card className="h-full w-full group overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/50">
+const ListViewCard = ({ expert }: { expert: Expert }) => (
+     <Card className="h-full w-full group overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/20">
         <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-6">
             <div className="relative flex-shrink-0">
                 <Avatar className="w-24 h-24 border-4 border-background ring-2 ring-primary">
@@ -74,7 +69,7 @@ const ListViewCard = ({ expert }: { expert: ExpertProfile }) => (
                     <AvatarFallback>{getInitials(expert.name)}</AvatarFallback>
                 </Avatar>
                  {expert.isAvailableNow && (
-                    <span className="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-emerald-500 ring-2 ring-background" title="Available Now" />
+                    <span className="absolute bottom-1 right-1 block h-4 w-4 rounded-full bg-secondary ring-2 ring-background" title="Available Now" />
                 )}
             </div>
             <div className="flex-grow text-center sm:text-left">
@@ -82,22 +77,25 @@ const ListViewCard = ({ expert }: { expert: ExpertProfile }) => (
                     {expert.name} <Verified className="h-5 w-5 text-primary" />
                 </h3>
                 <p className="text-sm font-medium text-primary">{expert.specialty}</p>
+                 <p className="text-xs text-muted-foreground mt-1">{expert.workplace}</p>
                  <div className="mt-2 flex items-center justify-center sm:justify-start gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1">
                         <Star className="h-4 w-4 text-amber-400 fill-amber-400" />
                         <span className="font-semibold">{expert.rating.toFixed(1)}</span>
-                        <span className="text-xs">({expert.totalSessions} reviews)</span>
+                        <span className="text-xs">({expert.reviews} reviews)</span>
                     </div>
                     <span className="hidden md:inline">|</span>
-                    <span className="hidden md:inline font-semibold text-foreground">{expert.field}</span>
+                    <span className="hidden md:inline font-semibold text-foreground">{expert.domain}</span>
                 </div>
             </div>
             <div className="flex flex-col items-center sm:items-end gap-2 flex-shrink-0">
-                <p className="text-xl font-bold">
-                    {new Intl.NumberFormat('en-US', { style: 'currency', currency: expert.currency, maximumFractionDigits: 0 }).format(expert.hourlyRate)}/hr
+                <p className="text-xl font-bold text-foreground/80">
+                    {new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', minimumFractionDigits: 0 }).format(expert.hourlyRate)}/hr
                 </p>
-                 <Button variant="ghost" size="sm">
-                    View Profile <ArrowRight className="ml-2 h-4 w-4" />
+                 <Button asChild variant="secondary" className="font-bold">
+                    <Link href={`/dashboard/book/${expert.id}`}>
+                        Book Consultation <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                 </Button>
             </div>
         </CardContent>

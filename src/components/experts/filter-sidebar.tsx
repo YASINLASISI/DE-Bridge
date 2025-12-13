@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
@@ -12,9 +12,11 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { useState } from 'react';
+import { Button } from '../ui/button';
+import { X } from 'lucide-react';
 
 const domains = ['Healthcare', 'Legal', 'Tech', 'Finance', 'Security', 'Education', 'Agriculture', 'Creative'];
-const locations = ['UK', 'USA', 'Canada', 'UAE'];
+const locations = ['UK', 'USA', 'Canada', 'UAE', 'Other'];
 const languages = ['English', 'Yoruba', 'Igbo', 'Hausa', 'Pidgin'];
 
 const FilterSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
@@ -27,15 +29,22 @@ const FilterSection = ({ title, children }: { title: string, children: React.Rea
 );
 
 export default function ExpertFilterSidebar() {
-    const [priceRange, setPriceRange] = useState([50]);
+    const [priceRange, setPriceRange] = useState([80]);
 
   return (
     <Card className="sticky top-24">
-      <CardHeader>
-        <CardTitle>Filter Experts</CardTitle>
+      <CardHeader className='flex-row items-center justify-between'>
+        <div className='space-y-1'>
+            <CardTitle>Filters</CardTitle>
+            <CardDescription>Refine your search</CardDescription>
+        </div>
+        <Button variant="ghost" size="sm">
+            <X className='mr-2 h-4 w-4' />
+            Reset
+        </Button>
       </CardHeader>
       <CardContent>
-        <Accordion type="multiple" defaultValue={['Domain', 'Availability', 'Price Range']} className="w-full">
+        <Accordion type="multiple" defaultValue={['Domain', 'Availability', 'Price Range', 'Rating']} className="w-full">
             {/* Domain Filter */}
             <FilterSection title="Domain">
                 <div className="space-y-3">
@@ -47,17 +56,31 @@ export default function ExpertFilterSidebar() {
                     ))}
                 </div>
             </FilterSection>
+            
+            {/* Price Range Filter */}
+            <FilterSection title="Price Range">
+                <div className="p-2">
+                    <Slider
+                        defaultValue={priceRange}
+                        max={200}
+                        min={20}
+                        step={10}
+                        onValueChange={(value) => setPriceRange(value)}
+                    />
+                    <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                        <span>₦20k</span>
+                        <span>₦{priceRange[0]}k/hr</span>
+                        <span>₦200k+</span>
+                    </div>
+                </div>
+            </FilterSection>
 
             {/* Availability Filter */}
              <FilterSection title="Availability">
                 <RadioGroup defaultValue="any">
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="any" id="avail-any" />
-                        <Label htmlFor="avail-any" className="font-normal">Any</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="24hrs" id="avail-24" />
-                        <Label htmlFor="avail-24" className="font-normal">Next 24 hours</Label>
+                        <RadioGroupItem value="now" id="avail-now" />
+                        <Label htmlFor="avail-now" className="font-normal">Available Now</Label>
                     </div>
                     <div className="flex items-center space-x-2">
                         <RadioGroupItem value="week" id="avail-week" />
@@ -70,37 +93,21 @@ export default function ExpertFilterSidebar() {
                 </RadioGroup>
             </FilterSection>
 
-             {/* Price Range Filter */}
-            <FilterSection title="Price Range">
-                <div className="p-2">
-                    <Slider
-                        defaultValue={[50]}
-                        max={200}
-                        step={10}
-                        onValueChange={(value) => setPriceRange(value)}
-                    />
-                    <div className="flex justify-between text-sm text-muted-foreground mt-2">
-                        <span>₦20k</span>
-                        <span>Up to ₦{priceRange[0] > 20 ? priceRange[0] : '20'}k/hr</span>
-                        <span>₦200k+</span>
-                    </div>
-                </div>
-            </FilterSection>
 
              {/* Rating Filter */}
             <FilterSection title="Rating">
-                 <RadioGroup>
+                 <RadioGroup defaultValue='all'>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="4+" id="rate-4" />
+                        <RadioGroupItem value="all" id="rate-all" />
+                        <Label htmlFor="rate-all" className="font-normal">All</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="4" id="rate-4" />
                         <Label htmlFor="rate-4" className="font-normal">4 stars & up</Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="4.5+" id="rate-4.5" />
+                        <RadioGroupItem value="4.5" id="rate-4.5" />
                         <Label htmlFor="rate-4.5" className="font-normal">4.5 stars & up</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="5" id="rate-5" />
-                        <Label htmlFor="rate-5" className="font-normal">5 stars</Label>
                     </div>
                 </RadioGroup>
             </FilterSection>

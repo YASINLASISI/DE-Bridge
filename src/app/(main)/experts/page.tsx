@@ -1,14 +1,12 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { collection, query, where } from 'firebase/firestore';
-import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import ExpertFilterSidebar from '@/components/experts/filter-sidebar';
 import ExpertCard from '@/components/experts/expert-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { LayoutGrid, List, SlidersHorizontal } from 'lucide-react';
+import { LayoutGrid, List, SlidersHorizontal, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Drawer,
@@ -24,50 +22,36 @@ import {
   PaginationEllipsis,
   PaginationNext,
 } from '@/components/ui/pagination';
-
-// Based on docs/backend.json Expert entity
-type ExpertProfile = {
-  id: string;
-  name: string;
-  specialty: string;
-  field: string;
-  hourlyRate: number;
-  currency: string;
-  rating: number;
-  totalSessions: number;
-  profilePhoto?: string;
-  verificationStatus: 'pending' | 'approved' | 'rejected';
-  // Assuming availability is part of the model
-  isAvailableNow?: boolean; 
-};
+import { mockExperts } from '@/lib/mock-data';
 
 export default function ExpertsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isFilterDrawerOpen, setFilterDrawerOpen] = useState(false);
-  const firestore = useFirestore();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // For now, we query all approved experts. Filtering logic will be added later.
-  const expertsQuery = useMemoFirebase(
-    () => (firestore ? query(collection(firestore, 'experts'), where('verificationStatus', '==', 'approved')) : null),
-    [firestore]
-  );
-  const { data: experts, isLoading } = useCollection<ExpertProfile>(expertsQuery);
+  // Simulate loading
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const experts = mockExperts;
   
   // Pagination logic (static for now)
   const currentPage = 1;
   const totalPages = Math.ceil((experts?.length || 0) / 9);
 
   return (
-    <div className="bg-background">
+    <div className="bg-muted/40">
       <div className="container mx-auto max-w-7xl px-4 py-12 md:py-20">
         {/* Page Header */}
         <div className="text-center mb-12">
             <h1 className="font-headline text-5xl font-extrabold tracking-tight">
-                 <span className="block bg-gradient-to-r from-red-500 via-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-fast">
+                 <span className="block bg-gradient-to-r from-primary via-emerald-500 to-accent bg-clip-text text-transparent bg-cover animate-gradient-fast">
                     Find Your Expert
                 </span>
             </h1>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70 font-bold">
+            <p className="mt-4 max-w-2xl mx-auto text-lg text-foreground/70">
                 Browse our global network of verified Nigerian professionals.
             </p>
         </div>
@@ -82,26 +66,28 @@ export default function ExpertsPage() {
           {/* Experts Grid / List */}
           <div className="flex-1">
             {/* Search and View Options */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6 p-4 border rounded-lg bg-card">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mb-6 p-4 border rounded-lg bg-card shadow-sm">
               <div className="relative w-full sm:max-w-xs">
-                <Input placeholder="Search by name or specialty..." className="pl-10" />
-                 <List className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input placeholder="Search by name, specialty..." className="pl-10" />
+                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 border rounded-md p-1">
+                <div className="flex items-center gap-1 border rounded-md p-1 bg-muted">
                    <Button
                     variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
-                    size="sm"
+                    size="icon"
                     onClick={() => setViewMode('grid')}
                     aria-label="Grid view"
+                    className='h-8 w-8'
                   >
                     <LayoutGrid className="h-5 w-5" />
                   </Button>
                   <Button
                      variant={viewMode === 'list' ? 'secondary' : 'ghost'}
-                    size="sm"
+                    size="icon"
                     onClick={() => setViewMode('list')}
                     aria-label="List view"
+                    className='h-8 w-8'
                   >
                     <List className="h-5 w-5" />
                   </Button>
@@ -114,7 +100,7 @@ export default function ExpertsPage() {
                     </Button>
                   </DrawerTrigger>
                   <DrawerContent className="lg:hidden">
-                    <div className="p-4 overflow-y-auto">
+                    <div className="p-4 overflow-y-auto max-h-[80vh]">
                         <ExpertFilterSidebar />
                     </div>
                   </DrawerContent>
@@ -138,11 +124,11 @@ export default function ExpertsPage() {
                    </Card>
                 ))}
               {!isLoading &&
-                experts?.map((expert) => <ExpertCard key={expert.id} expert={expert as any} viewMode={viewMode} />)}
+                experts?.map((expert) => <ExpertCard key={expert.id} expert={expert} viewMode={viewMode} />)}
             </div>
             
              {!isLoading && experts?.length === 0 && (
-                <div className="text-center py-16 col-span-full">
+                <div className="text-center py-16 col-span-full bg-card rounded-lg border">
                     <p className="text-lg font-medium">No experts found.</p>
                     <p className="text-muted-foreground">Try adjusting your filters.</p>
                 </div>
