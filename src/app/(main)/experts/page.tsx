@@ -7,6 +7,7 @@ import ExpertFilterSidebar from '@/components/experts/filter-sidebar';
 import ExpertCard from '@/components/experts/expert-card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { LayoutGrid, List, SlidersHorizontal } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
@@ -41,7 +42,6 @@ type ExpertProfile = {
 };
 
 export default function ExpertsPage() {
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [isFilterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const firestore = useFirestore();
@@ -157,7 +157,7 @@ export default function ExpertsPage() {
                     </PaginationItem>
                     <PaginationItem>
                     <PaginationLink href="#" isActive>1</PaginationLink>
-                    </ouagliosaPaginationItem>
+                    </PaginationItem>
                     <PaginationItem>
                     <PaginationLink href="#">2</PaginationLink>
                     </PaginationItem>

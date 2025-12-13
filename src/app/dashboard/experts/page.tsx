@@ -10,12 +10,13 @@ import {
   TableHead,
   TableCell,
 } from '@/components/ui/table';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 type ExpertProfile = {
   id: string;
@@ -64,8 +65,10 @@ const ExpertRow = ({ expert }: { expert: ExpertProfile }) => {
         {new Intl.NumberFormat('en-US', { style: 'currency', currency: expert.currency }).format(expert.hourlyRate)}/hr
       </TableCell>
       <TableCell className="text-right">
-        <Button variant="ghost" size="sm">
-          View Profile <ArrowRight className="ml-2 h-4 w-4" />
+        <Button variant="ghost" size="sm" asChild>
+          <Link href={`/experts/${expert.id}`}>
+            View Profile <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
         </Button>
       </TableCell>
     </TableRow>
@@ -113,6 +116,9 @@ export default function FindExpertsPage() {
             <h1 className="text-3xl font-bold">Find an Expert</h1>
             <p className="text-muted-foreground">Browse our network of verified diaspora professionals.</p>
         </div>
+        <Button asChild>
+            <Link href="/experts">Advanced Search</Link>
+        </Button>
       </div>
 
       <Card>
