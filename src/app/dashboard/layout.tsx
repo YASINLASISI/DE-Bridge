@@ -71,11 +71,15 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
   const getInitials = (name: string) => {
     if(!name) return 'U'
     const names = name.split(' ');
-    if (names.length > 1) {
+    if (names.length > 1 && names[0] && names[1]) {
       return `${names[0][0]}${names[1][0]}`;
     }
-    return name.substring(0, 2);
+    if (name) return name.substring(0, 2);
+    return 'U';
   }
+
+  const displayName = userProfile?.name || authUser?.displayName || authUser?.email;
+  const displayEmail = userProfile?.email || authUser?.email;
 
   return (
     <SidebarProvider>
@@ -94,19 +98,19 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/experts" isActive={pathname.startsWith('/dashboard/experts')} tooltip="Experts">
+              <SidebarMenuButton href="/dashboard/experts" isActive={pathname?.startsWith('/dashboard/experts')} tooltip="Experts">
                 <Users />
                 <span>Find Experts</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/bookings" isActive={pathname.startsWith('/dashboard/bookings')} tooltip="Bookings">
+              <SidebarMenuButton href="/dashboard/bookings" isActive={pathname?.startsWith('/dashboard/bookings')} tooltip="Bookings">
                 <Calendar />
                 <span>Bookings</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/messages" isActive={pathname.startsWith('/dashboard/messages')} tooltip="Messages">
+              <SidebarMenuButton href="/dashboard/messages" isActive={pathname?.startsWith('/dashboard/messages')} tooltip="Messages">
                 <MessageSquare />
                 <span>Messages</span>
               </SidebarMenuButton>
@@ -129,27 +133,20 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
             <SidebarTrigger className="md:hidden"/>
             <div className="flex-1" />
             <div className="ml-auto flex items-center gap-4">
-            {userProfile ? (
+            {isAuthLoading || isProfileLoading ? (
+                 <UserSkeleton />
+            ) : authUser && (
                  <div className="flex items-center gap-3">
                     <Avatar>
-                        <AvatarImage src={userProfile.profilePhoto} alt={userProfile.name} />
-                        <AvatarFallback>{getInitials(userProfile.name)}</AvatarFallback>
+                        <AvatarImage src={userProfile?.profilePhoto} alt={displayName || ''} />
+                        <AvatarFallback>{getInitials(displayName || '')}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <p className="font-semibold text-sm">{userProfile.name}</p>
-                        <p className="text-xs text-foreground/70">{userProfile.email}</p>
+                        <p className="font-semibold text-sm">{displayName}</p>
+                        <p className="text-xs text-foreground/70">{displayEmail}</p>
                     </div>
                  </div>
-            ) : authUser ? (
-                 <div className="flex items-center gap-3">
-                    <Avatar>
-                        <AvatarFallback>{getInitials(authUser.email || 'U')}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="text-xs text-foreground/70">{authUser.email}</p>
-                    </div>
-                 </div>
-            ) : <UserSkeleton />}
+            )}
             </div>
         </header>
         <main className="flex-1 p-4 md:p-8">{children}</main>

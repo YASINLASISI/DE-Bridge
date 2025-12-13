@@ -6,6 +6,8 @@ import {
   signInWithEmailAndPassword,
   FirebaseError,
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { getSdks } from '@/firebase';
 import { toast } from '@/hooks/use-toast';
 
 /** Initiate anonymous sign-in (non-blocking). */
@@ -20,10 +22,20 @@ export function initiateAnonymousSignIn(authInstance: Auth): void {
 }
 
 /** Initiate email/password sign-up (non-blocking). */
-export function initiateEmailSignUp(authInstance: Auth, email: string, password: string): void {
+export function initiateEmailSignUp(authInstance: Auth, email: string, password: string, fullName: string): void {
   createUserWithEmailAndPassword(authInstance, email, password)
     .then((userCredential) => {
-        // You can add post-signup logic here if needed, like creating a user doc.
+        const { firestore } = getSdks(authInstance.app);
+        const userDocRef = doc(firestore, 'users', userCredential.user.uid);
+        
+        // Create a user profile document in Firestore
+        setDoc(userDocRef, {
+            id: userCredential.user.uid,
+            name: fullName,
+            email: email,
+            role: null, // Role will be set during onboarding
+            createdAt: new Date().toISOString(),
+        });
     })
     .catch((error: FirebaseError) => {
     let description = 'An unexpected error occurred. Please try again.';

@@ -44,7 +44,7 @@ export default function SignupPage() {
   }, [user, isUserLoading, router]);
 
   const onSubmit = (data: SignupFormValues) => {
-    initiateEmailSignUp(auth, data.email, data.password);
+    initiateEmailSignUp(auth, data.email, data.password, data.fullName);
     toast({
       title: 'Account created!',
       description: "We're creating your account. You'll be redirected shortly.",
