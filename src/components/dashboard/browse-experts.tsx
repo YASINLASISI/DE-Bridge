@@ -17,6 +17,7 @@ import {
   Leaf,
   Paintbrush,
 } from 'lucide-react';
+import Link from 'next/link';
 
 const categories = [
   { name: 'Healthcare', icon: HeartPulse, count: 45 },
@@ -39,14 +40,15 @@ export const BrowseExperts = () => {
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categories.map(({ name, icon: Icon, count }) => (
-            <div
-              key={name}
-              className="group flex flex-col items-center justify-center p-4 rounded-lg border hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-            >
-              <Icon className="h-8 w-8 text-primary group-hover:text-accent-foreground" />
-              <p className="mt-2 text-sm font-semibold text-center">{name}</p>
-              <p className="text-xs text-muted-foreground">{count} Experts</p>
-            </div>
+            <Link key={name} href="/experts" passHref>
+                <div
+                  className="group flex flex-col items-center justify-center p-4 rounded-lg border h-full hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                >
+                  <Icon className="h-8 w-8 text-primary group-hover:text-accent-foreground" />
+                  <p className="mt-2 text-sm font-semibold text-center">{name}</p>
+                  <p className="text-xs text-muted-foreground">{count} Experts</p>
+                </div>
+            </Link>
           ))}
         </div>
       </CardContent>
