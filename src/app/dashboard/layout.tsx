@@ -60,7 +60,7 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
   };
 
   // While auth or profile is loading, show a full-screen loader.
-  if (isAuthLoading || (authUser && isProfileLoading)) {
+  if (isAuthLoading || (authUser && isProfileLoading && !userProfile)) {
     return (
       <div className="flex h-screen w-full items-center justify-center">
         <p>Loading your dashboard...</p>
