@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemoFirebase, useCollection, useFirestore } from '@/firebase';
-import { collection, query } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 import {
   Table,
   TableHeader,
