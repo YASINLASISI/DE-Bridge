@@ -56,7 +56,7 @@ const SeekerDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
                 <p className="text-muted-foreground">You have no upcoming appointments scheduled. Time to book your next session!</p>
             </CardContent>
             <CardFooter>
-                 <Button>Find an Expert <ArrowRight className="ml-2"/></Button>
+                 <Button>Find an Expert <ArrowRight className="ml-2 h-4 w-4"/></Button>
             </CardFooter>
         </Card>
          <Card className="flex flex-col">
@@ -118,7 +118,7 @@ const ExpertDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
           <p className="text-sm text-muted-foreground">new requests waiting</p>
         </CardContent>
         <CardFooter>
-            <Button>Manage Bookings <ArrowRight className="ml-2"/></Button>
+            <Button>Manage Bookings <ArrowRight className="ml-2 h-4 w-4"/></Button>
         </CardFooter>
       </Card>
        <Card className="flex flex-col">
@@ -198,6 +198,7 @@ export default function DashboardPage() {
   }
   
   if (!authUser) {
+    // This case should ideally be handled by the layout which redirects to login.
     return <div className="flex h-full w-full items-center justify-center"><p>Redirecting to login...</p></div>;
   }
   
@@ -205,10 +206,12 @@ export default function DashboardPage() {
     return <div className="text-red-500">Error loading your profile: {error.message}</div>
   }
 
+  // If the user is authenticated but has no profile document yet, show role selection.
   if (!userProfile) {
     return <RoleSelection onSelectRole={handleSelectRole} />;
   }
 
+  // Show the appropriate dashboard based on the user's role.
   if (userProfile.role === 'seeker') {
     return <SeekerDashboard userProfile={userProfile} />;
   }
@@ -217,5 +220,6 @@ export default function DashboardPage() {
     return <ExpertDashboard userProfile={userProfile} />;
   }
 
-  return <p>An unexpected error occurred.</p>;
+  // Fallback for any unexpected state
+  return <p>An unexpected error occurred while loading your dashboard.</p>;
 }
