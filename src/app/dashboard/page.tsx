@@ -3,12 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc } from 'firebase/firestore';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { FileText, Calendar, User, DollarSign, Clock, Settings, ArrowRight } from 'lucide-react';
 
-// Define the User type based on your backend.json
 interface UserProfile {
   id: string;
   name: string;
@@ -40,68 +40,98 @@ const RoleSelection = ({ onSelectRole }: { onSelectRole: (role: 'seeker' | 'expe
 };
 
 const SeekerDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
-  <div>
-    <h1 className="text-3xl font-bold mb-4">Welcome, {userProfile.name}!</h1>
-    <p className="text-muted-foreground mb-6">Here you can find experts, manage your bookings, and view your messages.</p>
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Upcoming Bookings</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>You have no upcoming bookings.</p>
-        </CardContent>
-      </Card>
-       <Card>
-        <CardHeader>
-          <CardTitle>Recent Messages</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>You have no new messages.</p>
-        </CardContent>
-      </Card>
-       <Card>
-        <CardHeader>
-          <CardTitle>Find an Expert</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Ready to get started?</p>
-          <Button className="mt-4">Search Experts</Button>
-        </CardContent>
-      </Card>
+  <div className="space-y-8">
+    <div>
+        <h1 className="text-4xl font-bold tracking-tight">Welcome, {userProfile.name}!</h1>
+        <p className="text-muted-foreground text-lg mt-2">Here’s your personal dashboard to manage your journey.</p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="flex flex-col">
+            <CardHeader className="flex-row items-center gap-4">
+                <Calendar className="w-8 h-8 text-primary" />
+                <CardTitle>Upcoming Appointments</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <p className="text-muted-foreground">You have no upcoming appointments scheduled. Time to book your next session!</p>
+            </CardContent>
+            <CardFooter>
+                 <Button>Find an Expert <ArrowRight className="ml-2"/></Button>
+            </CardFooter>
+        </Card>
+         <Card className="flex flex-col">
+            <CardHeader className="flex-row items-center gap-4">
+                <FileText className="w-8 h-8 text-primary" />
+                <CardTitle>Consultation History</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <p className="text-muted-foreground">Your past consultation summaries and documents will appear here.</p>
+            </CardContent>
+             <CardFooter>
+                 <Button variant="outline">View History</Button>
+            </CardFooter>
+        </Card>
+        <Card className="flex flex-col">
+            <CardHeader className="flex-row items-center gap-4">
+                <User className="w-8 h-8 text-primary" />
+                <CardTitle>Profile & Preferences</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-grow">
+                <p className="text-muted-foreground">Manage your personal information, payment methods, and notification settings.</p>
+            </CardContent>
+             <CardFooter>
+                 <Button variant="outline">Go to Settings</Button>
+            </CardFooter>
+        </Card>
     </div>
   </div>
 );
 
 const ExpertDashboard = ({ userProfile }: { userProfile: UserProfile }) => (
-  <div>
-    <h1 className="text-3xl font-bold mb-4">Welcome, Expert {userProfile.name}!</h1>
-    <p className="text-muted-foreground mb-6">Manage your profile, view booking requests, and track your sessions.</p>
-     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Booking Requests</CardTitle>
+  <div className="space-y-8">
+    <div>
+        <h1 className="text-4xl font-bold tracking-tight">Expert Dashboard</h1>
+        <p className="text-muted-foreground text-lg mt-2">Welcome back, {userProfile.name}. Here's your business overview.</p>
+    </div>
+
+     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Card className="flex flex-col">
+        <CardHeader className="flex-row items-center justify-between">
+            <CardTitle>Earnings Overview</CardTitle>
+            <DollarSign className="w-6 h-6 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
-          <p>You have no new booking requests.</p>
+        <CardContent className="flex-grow">
+          <p className="text-4xl font-bold tracking-tighter">$0.00</p>
+          <p className="text-sm text-muted-foreground">this month</p>
         </CardContent>
+         <CardFooter>
+             <Button variant="outline">View Earnings Report</Button>
+        </CardFooter>
       </Card>
-       <Card>
-        <CardHeader>
-          <CardTitle>Your Profile</CardTitle>
+       <Card className="flex flex-col">
+        <CardHeader className="flex-row items-center justify-between">
+            <CardTitle>Booking Requests</CardTitle>
+            <Clock className="w-6 h-6 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
-          <p>Keep your profile updated to attract clients.</p>
-           <Button variant="outline" className="mt-4">Edit Profile</Button>
+        <CardContent className="flex-grow">
+           <p className="text-4xl font-bold tracking-tighter">0</p>
+          <p className="text-sm text-muted-foreground">new requests waiting</p>
         </CardContent>
+        <CardFooter>
+            <Button>Manage Bookings <ArrowRight className="ml-2"/></Button>
+        </CardFooter>
       </Card>
-       <Card>
-        <CardHeader>
-          <CardTitle>Total Earnings</CardTitle>
+       <Card className="flex flex-col">
+        <CardHeader className="flex-row items-center justify-between">
+            <CardTitle>Your Profile</CardTitle>
+            <Settings className="w-6 h-6 text-muted-foreground" />
         </CardHeader>
-        <CardContent>
-          <p className="text-3xl font-bold">$0.00</p>
+        <CardContent className="flex-grow">
+          <p className="text-muted-foreground">Keep your availability and professional details up-to-date to attract more clients.</p>
         </CardContent>
+        <CardFooter>
+             <Button variant="outline">Edit Profile & Availability</Button>
+        </CardFooter>
       </Card>
     </div>
   </div>
@@ -114,7 +144,6 @@ export default function DashboardPage() {
   const { toast } = useToast();
   const [isCreatingProfile, setIsCreatingProfile] = useState(false);
 
-  // Memoize the document reference
   const userDocRef = useMemoFirebase(() => {
     if (!firestore || !authUser) return null;
     return doc(firestore, 'users', authUser.uid);
@@ -169,21 +198,17 @@ export default function DashboardPage() {
   }
   
   if (!authUser) {
-    // This case is handled by the layout, but as a fallback:
     return <div className="flex h-full w-full items-center justify-center"><p>Redirecting to login...</p></div>;
   }
   
   if (error) {
-    // This will catch Firestore permission errors from useDoc
     return <div className="text-red-500">Error loading your profile: {error.message}</div>
   }
 
-  // If there's an authenticated user but no profile document after loading.
   if (!userProfile) {
     return <RoleSelection onSelectRole={handleSelectRole} />;
   }
 
-  // Render the correct dashboard based on the user's role.
   if (userProfile.role === 'seeker') {
     return <SeekerDashboard userProfile={userProfile} />;
   }
@@ -192,6 +217,5 @@ export default function DashboardPage() {
     return <ExpertDashboard userProfile={userProfile} />;
   }
 
-  // Fallback for any other case
   return <p>An unexpected error occurred.</p>;
 }
