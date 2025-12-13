@@ -6,7 +6,7 @@ import { useUser, useAuth, useFirestore, useDoc, useMemoFirebase } from '@/fireb
 import { doc } from 'firebase/firestore';
 import { SidebarProvider, Sidebar, SidebarTrigger, SidebarContent, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarInset, SidebarFooter } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LayoutDashboard, Users, Calendar, MessageSquare, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Calendar, MessageSquare, LogOut, User, Lightbulb, Bell } from 'lucide-react';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -98,7 +98,7 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/experts" isActive={pathname?.startsWith('/dashboard/experts')} tooltip="Experts">
+              <SidebarMenuButton href="/dashboard/experts" isActive={pathname?.startsWith('/dashboard/experts')} tooltip="Find Experts">
                 <Users />
                 <span>Find Experts</span>
               </SidebarMenuButton>
@@ -113,6 +113,24 @@ const AuthenticatedDashboardLayout = ({ children }: { children: React.ReactNode 
               <SidebarMenuButton href="/dashboard/messages" isActive={pathname?.startsWith('/dashboard/messages')} tooltip="Messages">
                 <MessageSquare />
                 <span>Messages</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/dashboard/profile" isActive={pathname?.startsWith('/dashboard/profile')} tooltip="Profile Management">
+                <User />
+                <span>Profile</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/dashboard/recommendations" isActive={pathname?.startsWith('/dashboard/recommendations')} tooltip="Smart Recommendations">
+                <Lightbulb />
+                <span>Recommendations</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="/dashboard/notifications" isActive={pathname?.startsWith('/dashboard/notifications')} tooltip="Notifications">
+                <Bell />
+                <span>Notifications</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
