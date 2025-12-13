@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import Logo from '@/components/logo';
 
 const navLinks = [
-  { name: 'Find Experts', href: '#' },
+  { name: 'Find Experts', href: '/experts' },
   { name: 'How It Works', href: '#' },
   { name: 'For Experts', href: '#' },
 ];

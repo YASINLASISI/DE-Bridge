@@ -4,6 +4,7 @@ import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { VariantProps, cva } from "class-variance-authority"
 import { PanelLeft } from "lucide-react"
+import Link from "next/link"
 
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
@@ -534,12 +535,16 @@ const sidebarMenuButtonVariants = cva(
 )
 
 const SidebarMenuButton = React.forwardRef<
-  HTMLButtonElement,
-  React.ComponentProps<"button"> & {
+  HTMLAnchorElement,
+  React.ComponentProps<typeof Link> & {
     asChild?: boolean
     isActive?: boolean
     tooltip?: string | React.ComponentProps<typeof TooltipContent>
-  } & VariantProps<typeof sidebarMenuButtonVariants>
+    variant?: VariantProps<typeof sidebarMenuButtonVariants>["variant"]
+    size?: VariantProps<typeof sidebarMenuButtonVariants>["size"]
+    // Allow button props like onClick as well
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  }
 >(
   (
     {
@@ -549,26 +554,31 @@ const SidebarMenuButton = React.forwardRef<
       size = "default",
       tooltip,
       className,
+      href,
+      onClick,
       ...props
     },
     ref
   ) => {
-    const Comp = asChild ? Slot : "button"
     const { isMobile, state } = useSidebar()
+    
+    const isLink = !!href;
+    const Comp = asChild ? Slot : (isLink ? Link : 'button');
 
-    const button = (
+    const buttonContent = (
       <Comp
-        ref={ref}
+        ref={ref as any}
         data-sidebar="menu-button"
         data-size={size}
         data-active={isActive}
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+        {...(isLink ? { href } : { onClick, type: 'button' })}
         {...props}
       />
     )
 
     if (!tooltip) {
-      return button
+      return buttonContent
     }
 
     if (typeof tooltip === "string") {
@@ -576,10 +586,12 @@ const SidebarMenuButton = React.forwardRef<
         children: tooltip,
       }
     }
-
+    
     return (
       <Tooltip>
-        <TooltipTrigger asChild>{button}</TooltipTrigger>
+        <TooltipTrigger asChild>
+          {buttonContent}
+        </TooltipTrigger>
         <TooltipContent
           side="right"
           align="center"
