@@ -15,7 +15,7 @@ import {
   Shield,
   GraduationCap,
   Leaf,
-  PaintBrush,
+  Paintbrush,
 } from 'lucide-react';
 
 const categories = [
@@ -26,7 +26,7 @@ const categories = [
   { name: 'Security', icon: Shield, count: 18 },
   { name: 'Education', icon: GraduationCap, count: 62 },
   { name: 'Agriculture', icon: Leaf, count: 25 },
-  { name: 'Creative', icon: PaintBrush, count: 41 },
+  { name: 'Creative', icon: Paintbrush, count: 41 },
 ];
 
 export const BrowseExperts = () => {
